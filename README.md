@@ -13,5 +13,7 @@ GOOD LUCK !
 
 
 // NOTE //
+
 d_order is for dine-in order
+
 t_order is for take away order

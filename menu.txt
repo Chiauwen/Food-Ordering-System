@@ -1,0 +1,1 @@
+1 Extra_Cheese_Burger 16  2 Fish_N_Crisp_Burger 12  3 Double_Fish_Burger 12  4 BBQ_Chicken_Burger 12  5 Spicy_Deluxe_Burger 13 6 Mushroom_Burger 10 7 Mashed_Potato_Bowl 6  8 Truffle_Crisp_Fries 16  9 Mayo_Cheese_Fries 12  10 Crispy_Onion_Rings 10  11 Iced_Lemon_Tea 5 12 Iced_Honey_Lemon 5  13 Iced_Orange_Juice 7  14 Hot_Green_Tea 3  15 Hot_Lemon_Tea 3 

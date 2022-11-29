@@ -13,7 +13,7 @@ using namespace std;
 fstream file, file1;
 HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);     /* FOR TEXT COLOUR */
 
-class Menu{
+class Menu{                                     /* MENU CLASS */
     protected:
         int pno;
         string name;
@@ -24,7 +24,7 @@ class Menu{
         void loading();
 };
 
-class Customer : public Menu {
+class Customer : public Menu {                  /* CUSTOMER CLASS, INHERITANCE FROM MENU CLASS */
     private:
         int order_arr[15], quan[15], c = 0;     /* MAX 15 ORDERS */
         float amt = 0, total = 0;
@@ -61,7 +61,7 @@ void Menu::menu()                   /* FUNCTION TO DISPLAY MENU FROM MENU.TXT */
 
     file >> pno >> name >> price;
 
-    while (!file.eof())
+    while (!file.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
     {
         cout << "\t\t |" << setw(5) << pno << "   | " << setw(10) <<  name << "\t\t\t\t" << " |\t " << setw(5) << price << "     \t|" << endl;
         file >> pno >> name >> price;
@@ -85,7 +85,7 @@ void Menu::loading()                    /* FUNCTION FOR LOADING BAR */
     for (int i=0; i <=25; i++){
         SetConsoleTextAttribute(h,10);
         cout << b;
-        Sleep(80); /* TRANSITION TIME */
+        Sleep(80); /* TRANSITION SPEED */
     }
 }
 
@@ -99,11 +99,11 @@ displaymenu:
             file.close();
             menu();
 
-        ofstream fileorder;                        /* STORE ORDER FROM CUSTOMER INTO ORDER.TXT*/
-        fileorder.open("order.txt", ios::app);
+        ofstream filedorder;                        /* STORE ORDER FROM CUSTOMER INTO D_ORDER.TXT*/
+        filedorder.open("d_order.txt", ios::app);
 
-        ofstream filetemp;                        /* STORE ORDER FROM CUSTOMER INTO ORDERTEMP.TXT*/
-        filetemp.open("ordertemp.txt", ios::app);
+        ofstream filetorder;                        /* STORE ORDER FROM CUSTOMER INTO T_ORDER.TXT*/
+        filetorder.open("t_order.txt", ios::app);
 
         cout << endl;
         SetConsoleTextAttribute(h,7);            /* DINE IN / TAKE AWAY */
@@ -124,7 +124,7 @@ displaymenu:
             cin >> table_no;
 
             if (table_no >= 1 && table_no <= 30){
-                fileorder << "  " << cust_type << " " << table_no;
+                //do nothing
             }else{
                 SetConsoleTextAttribute(h,4);
                 cout << "\n\t\t\t\t   Please enter a valid table no. (1 - 30)\n";
@@ -142,7 +142,6 @@ displaymenu:
             cin >> cust_name;
             cout << "\t\t >> Please enter your phone number : ";
             cin >> cust_phone;
-            fileorder << "  " << cust_type << " " << cust_name << " " << cust_phone;
         }
         else
             {
@@ -156,22 +155,25 @@ displaymenu:
                 cout << "\n\t\t >> Enter the product no.: ";
                 cin >> order_arr[c];
 
-                if (order_arr[c] >= 1 && order_arr[c] <= 15){
+                if (order_arr[c] >= 1 && order_arr[c] <= 15){           /* IF PRODUCT NO. IS VALID, THEN ASK FOR QUANTITY */
                    quantity:
                     SetConsoleTextAttribute(h,7);
                     cout << "\n\t\t >> Quantity in number : ";
                     cin >> quan[c];
 
-                    if(quan[c] >= 1 && quan[c] <= 10){
-                        fileorder << " " << order_arr[c] << " " << quan[c];       /* IF INPUT ARE ALL CORRECT, THEN STORE INTO ORDER.TXT*/
-                        filetemp << " " << order_arr[c] << " " << quan[c];      /* STORE PRODUCT NO. AND QUANTITY INTO TEMPORARILY FILE */
-                        c++;                                                    /* ORDER +1 */
-                    }else{
+                    if (quan[c] >= 1 && quan[c] <= 10){
+                        if (cust_type == 1){
+                            filedorder << " " << cust_type << " " << table_no << " " << order_arr[c] << " " << quan[c];      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO D_ORDER.TXT*/
+                        }else if(cust_type == 2){
+                            filetorder << " " << cust_type << " " << cust_name << " " << cust_phone << " " << order_arr[c] << " " << quan[c];       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO T_ORDER.TXT*/
+                        }
+                        c++;                                                           /* ORDER +1 */
+                    }else{                                                             /* QUANTITY BELOW/EXCEED RANGE */
                         SetConsoleTextAttribute(h,4);
                         cout << "\n\t\t\t\t   Sorry. Minimum order is 1. Maximum order is 10.\n";
                         goto quantity;
                     }
-                }else{
+                }else{                                                                 /* PRODUCT NO. NOT VALID */
                     SetConsoleTextAttribute(h,4);
                     cout << "\n\t\t\t\t   Please enter a valid product no. (1 - 15)\n";
                     goto restart;
@@ -185,12 +187,12 @@ displaymenu:
             } while ((addp == 'y' || addp == 'Y') && (c < 15));
             system("cls");
 
-            show_order();                   /* CALL SHOW ORDER FUNCTION */
+            show_order();                   /* CALL SHOW ORDER FUNCTION WHEN CUSTOMER KEY IN 'N' */
 
         }
 }
 
-void Customer::add_order()
+void Customer::add_order()                  /* FUNCTION FOR CUSTOMER TO ADD ORDER */
 {
     displaymenu:
     ofstream file;
@@ -200,11 +202,11 @@ void Customer::add_order()
         file.close();
         menu();
 
-    ofstream fileorder;                        /* STORE ORDER FROM CUSTOMER INTO ORDER.TXT*/
-    fileorder.open("order.txt", ios::app);
+    ofstream filedorder;                        /* STORE ORDER FROM CUSTOMER INTO D_ORDER.TXT*/
+    filedorder.open("d_order.txt", ios::app);
 
-    ofstream filetemp;                        /* STORE ORDER FROM CUSTOMER INTO ORDERTEMP.TXT*/
-    filetemp.open("ordertemp.txt", ios::app);
+    ofstream filetorder;                        /* STORE ORDER FROM CUSTOMER INTO T_ORDER.TXT*/
+    filetorder.open("t_order.txt", ios::app);
 
     cout << endl;
 
@@ -221,10 +223,13 @@ void Customer::add_order()
             cout << "\n\t\t >> Quantity in number : ";
             cin >> quan[c];
 
-            if(quan[c] >= 1 && quan[c] <= 10){
-                fileorder << order_arr[c] << " " << quan[c];       /* IF INPUT ARE ALL CORRECT, THEN STORE INTO ORDER.TXT*/
-                filetemp << order_arr[c] << " " << quan[c];
-                c++;                                                    /* ORDER +1 */
+            if (quan[c] >= 1 && quan[c] <= 10){
+                if (cust_type == 1){
+                    filedorder << " " << cust_type << " " << table_no << " " << order_arr[c] << " " << quan[c];      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO D_ORDER.TXT*/
+                }else if(cust_type == 2){
+                    filetorder << " " << cust_type << " " << cust_name << " " << cust_phone << " " << order_arr[c] << " " << quan[c];       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO T_ORDER.TXT*/
+                }
+                c++;                    /* ORDER +1 */
             }else{
                 SetConsoleTextAttribute(h,4);
                 cout << "\n\t\t\t\t   Sorry. Minimum order is 1. Maximum order is 10.\n";
@@ -251,7 +256,7 @@ void Customer::add_order()
 
 /////////////////////////////////////////////////////////////////////////////////
 
-void Customer::change_order()
+void Customer::change_order()               /* FUCNTION FOR CUSTOMER TO CHANGE ORDER'S QUANTITY */
 {
 
 
@@ -313,9 +318,11 @@ void Customer::show_order()                 /* FUCNTION TO SHOW CUSTOMER'S ORDER
 
             switch (changeorder){
                 case 1:
+                    system("cls");
                     add_order();
                     break;
                 case 2:
+                    system("cls");
                     change_order();
                     break;
                 case 3:
@@ -329,10 +336,10 @@ void Customer::show_order()                 /* FUCNTION TO SHOW CUSTOMER'S ORDER
 
         }else if (cp == 'n' || cp == 'N'){
             SetConsoleTextAttribute(h,6);
-            cout << "\n\t\t\t\t      **************************************";
-            cout << "\n\t\t\t\t      |        Thank you for order!        |";
-            cout << "\n\t\t\t\t      | We will prepare your order soon... |";
-            cout << "\n\t\t\t\t      **************************************\n";
+            cout << "\n\t\t\t\t      *******************************************";
+            cout << "\n\t\t\t\t      |         Thank you for your order!       |";
+            cout << "\n\t\t\t\t      |     We will prepare your order soon...  |";
+            cout << "\n\t\t\t\t      *******************************************\n";
             SetConsoleTextAttribute(h,7);
         }else{
             SetConsoleTextAttribute(h,4);
@@ -343,8 +350,8 @@ void Customer::show_order()                 /* FUCNTION TO SHOW CUSTOMER'S ORDER
 
 void user_optional(string opt)                  /* FUNCTION FOR USER AND ADMIN ON MAIN PAGE */
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    Customer c;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);     /* FOR TEXT COLOUR */
+    Customer c;                                     /* CLASS OBJECT */
     //Admin a;
 
     if(opt == "1")
@@ -370,7 +377,6 @@ void user_optional(string opt)                  /* FUNCTION FOR USER AND ADMIN O
     }
 }
 
-
 int main() {                    /* MAIN PAGE */
     string user_opt;
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -381,30 +387,33 @@ int main() {                    /* MAIN PAGE */
 
     // MAIN PAGE INTERFACE
     SetConsoleTextAttribute(h,6);
-
     cout << "\n\t\t\t\t   ......................................................";
     cout << "\n\t\t\t\t   |\t\t\t\t\t\t\t|";
-    cout << "\n\t\t\t\t   |\t\t\t  Foodie\t\t\t|";
+    cout << "\n\t\t\t\t   |\t\t\t   Foodie\t\t\t|";
     cout << "\n\t\t\t\t   |\t\t\t\t\t\t\t|";
     cout << "\n\t\t\t\t   ......................................................\n";
+    SetConsoleTextAttribute(h,14);
+    cout << "\n\t\t\t\t\t  Welcome! It is our pleasure to serve you.";
 
-    SetConsoleTextAttribute(h,7);
-    cout << "\n\n\t\t\t\t\t\t\t  Customer \t\t\t\n" << endl;
-    SetConsoleTextAttribute(h,10);
-    cout << "\t\t\t\t\t\t       <1> Take Order \t\t\t\n" << endl;
     SetConsoleTextAttribute(h,6);
-    cout << "\n\t\t\t\t   ------------------------------------------------------\n";
+    cout << "\n\n\t\t\t\t   ------------------------------------------------------\n";
+    SetConsoleTextAttribute(h,7);
+    cout << "\n\t\t\t\t\t\t\t  Customer \t\t\t\n" << endl;
+    SetConsoleTextAttribute(h,10);
+    cout << "\t\t\t\t\t\t       <1> Take Order \t\t\t" << endl;
+    SetConsoleTextAttribute(h,6);
+    cout << "\n\t\t\t\t   ------------------------------------------------------";
 
     SetConsoleTextAttribute(h,7);
     cout << "\n\n\t\t\t\t\t\t\t   Admin\n" << endl;
     SetConsoleTextAttribute(h,9);
-    cout << "\t\t\t\t\t\t\t <2> Login\n" << endl;
+    cout << "\t\t\t\t\t\t\t <2> Login" << endl;
 
     SetConsoleTextAttribute(h,6);
     cout << "\n\t\t\t\t   ------------------------------------------------------\n";
 
     SetConsoleTextAttribute(h,7);
-    cout << "\n\n\t\t\t\t    >> Choose Your Option (1/2) : ";
+    cout << "\n\n\t\t\t\t    >> Please select an option (1/2) : ";
 
     // GO TO THE NEXT PAGE
         cin >> user_opt;

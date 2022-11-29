@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<stdlib.h>
-#include <conio.h>
+#include<conio.h>
 #include<fstream>
 #include<sstream>
 #include<iomanip>
@@ -9,6 +9,7 @@
 #include<Windows.h>
 
 using namespace std;
+
 fstream file, file1;
 HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);     /* FOR TEXT COLOUR */
 
@@ -43,13 +44,17 @@ class Customer : public Menu {
 void Menu::menu()                   /* FUNCTION TO DISPLAY MENU FROM MENU.TXT */
 {
     system("cls");
+
     file.open("menu.txt", ios::in);
+
     SetConsoleTextAttribute(h,6);
     cout << "\t\t\t\t\t\t....................";
     cout << "\n \t\t\t\t\t\t|\tMENU\t   |\n";
     cout << "\t\t\t\t\t\t....................\n";
     cout << endl;
+
     SetConsoleTextAttribute(h,15);
+    
     cout << "\t\t ================================================================================" << endl;
     cout << setw(5) << "\t\t |  P.NO  |" << "\t\t\t NAME  \t\t\t" << " |\t   PRICE   \t|" << endl;
     cout << "\t\t ================================================================================" << endl;

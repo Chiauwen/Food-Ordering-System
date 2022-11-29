@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<stdlib.h>
-#include<conio.h>
+#include <conio.h>
 #include<fstream>
 #include<sstream>
 #include<iomanip>
@@ -9,7 +9,6 @@
 #include<Windows.h>
 
 using namespace std;
-
 fstream file, file1;
 HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);     /* FOR TEXT COLOUR */
 
@@ -27,7 +26,7 @@ class Menu{                                     /* MENU CLASS */
 class Customer : public Menu {                  /* CUSTOMER CLASS, INHERITANCE FROM MENU CLASS */
     private:
         int order_arr[15], quan[15], c = 0;     /* MAX 15 ORDERS */
-        float amt = 0, total = 0;
+        float amt = 0, total = 0, addtotal = 0;
         char addp, cp;
         string cust_name, cust_phone;
         int cust_type, table_no, changeorder, cpno, cq;
@@ -35,7 +34,9 @@ class Customer : public Menu {                  /* CUSTOMER CLASS, INHERITANCE F
     public:
         void order();
         void show_order();
+        void show_order2();
         void add_order();
+        void change_option();
         void change_order();    /* HAVENT DONE */
         void cancel_order();    /* HAVENT DONE */
 };
@@ -44,17 +45,13 @@ class Customer : public Menu {                  /* CUSTOMER CLASS, INHERITANCE F
 void Menu::menu()                   /* FUNCTION TO DISPLAY MENU FROM MENU.TXT */
 {
     system("cls");
-
     file.open("menu.txt", ios::in);
-
     SetConsoleTextAttribute(h,6);
     cout << "\t\t\t\t\t\t....................";
     cout << "\n \t\t\t\t\t\t|\tMENU\t   |\n";
     cout << "\t\t\t\t\t\t....................\n";
     cout << endl;
-
     SetConsoleTextAttribute(h,15);
-    
     cout << "\t\t ================================================================================" << endl;
     cout << setw(5) << "\t\t |  P.NO  |" << "\t\t\t NAME  \t\t\t" << " |\t   PRICE   \t|" << endl;
     cout << "\t\t ================================================================================" << endl;
@@ -249,7 +246,7 @@ void Customer::add_order()                  /* FUNCTION FOR CUSTOMER TO ADD ORDE
     } while ((addp == 'y' || addp == 'Y') && (c < 15));
     system("cls");
 
-        show_order();
+        show_order2();
 
     }
 }
@@ -301,7 +298,50 @@ void Customer::show_order()                 /* FUCNTION TO SHOW CUSTOMER'S ORDER
         cout << "\t===================================================================================================" << endl;
         getch();
 
-        change:
+        change_option();
+}
+
+void Customer::show_order2()                 /* FUCNTION TO SHOW CUSTOMER'S ORDER */
+{
+    SetConsoleTextAttribute(h,8);
+    cout << "\n\n\t\t\t\t\t      ...Generating Order...\n\n";
+    loading();
+
+    SetConsoleTextAttribute(h,15);
+    cout << "\n\n\n\t\t\t\t\t\t  Order Confirmed!" << endl;
+    cout << "\n\t\t\t\t\t    This is your order summary: \n" << endl;
+    cout << "\t===================================================================================================";
+    cout << "\n\t|   No  | \t\t\t Name \t\t\t|  Quantity  |    Price   |     Amount    |" << endl;
+    cout << "\t===================================================================================================";
+
+    for (int x = 0; x < c; x++)            /* DISPLAY THE ORDER AND AMOUNT */
+    {
+        file.open("menu.txt", ios::in);
+        file >> pno >> name >> price;
+        while (!file.eof())
+        {
+            if (pno == order_arr[x])        /* FIND PRODUCT NO. THAT MATCH WITH CUSTOMER INPUT */
+            {
+                amt = price * quan[x];
+                cout << "\n\t| " << setw(4) << order_arr[x] << "  | " << setw(10) << name << "\t\t\t\t|    " << setw(3) << quan[x]
+                << "     |   " << setw(5) << price << "    |     " << setw(5) << amt << "     | " << endl;
+                addtotal += amt;
+            }
+            file >> pno >> name >> price;
+        }
+        file.close();
+    }
+        cout << "\t===================================================================================================" << endl;
+        cout << "\n\t|\t\t\t\t\t\t\t\t\t TOTAL AMOUNT : RM " << addtotal << "\t  |" <<endl;
+        cout << "\t===================================================================================================" << endl;
+        getch();
+
+        change_option();
+}
+
+void Customer::change_option()
+{
+    change:
         SetConsoleTextAttribute(h,7);
         cout << "\n\t---------------------------------------------------------------------------------------------------";
         cout << "\n\t >> Do you want to change your order? [y/n] : ";

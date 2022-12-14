@@ -263,7 +263,7 @@ void Customer::cancel_order()
             if (cust_type == 1){
                 filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "\n";      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
             }else if(cust_type == 2){
-                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i];       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i] << "\n";       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
             }
         }
 

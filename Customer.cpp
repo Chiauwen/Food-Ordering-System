@@ -233,43 +233,50 @@ void Customer::cancel_order()
     cout << "\t >> Which order do you want to remove? Please enter the P.NO : ";
     cin >> deleteorder;
 
-    int i, j, found;
+    int i, index = -1;
     for(i = 0; i < c; i++)
     {
         if(order_arr[i] == deleteorder)
         {
-            for(j = i; j < (c-1); j++)
-            order_arr[j] = order_arr[j+1];
-            found = 1;
-            c--;
+            index = i;
+            break;
         }
     }
 
-    ofstream filedorder;                        /* STORE ORDER FROM CUSTOMER INTO Dine.csv*/
-    filedorder.open("Dine.csv", ios::app);
-
-    ofstream filetorder;                        /* STORE ORDER FROM CUSTOMER INTO takeAway.csv*/
-    filetorder.open("takeAway.csv", ios::app);
-
-    if(found == 1)
+    if(index != -1)
     {
-        cout << "\n\t\t\t\t\t\t Deleting order...\n";
+        for(i = index; i < (c-1); i++)
+            // SHIFT THE ORDERS THAT ARE AFTER 'deleteorder' TO THE LEFT
+            // SHIFT FROM INDEX +1 BY 1 POSITION TO THE LEFT
+            order_arr[i] = order_arr[i+1];
+            quan[i] = quan[i+1];
+            c--;
 
-        if (cust_type == 1){
-            filedorder << "," << cust_type << "," << table_no << "," << order_arr[i] << "," << quan[i];      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
-        }else if(cust_type == 2){
-            filetorder << "," << cust_type << "," << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i];       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+        for(i = 0; i < c; i++)
+        {
+            ofstream filedorder;                        /* STORE ORDER FROM CUSTOMER INTO Dine.csv*/
+            filedorder.open("Dine.csv", ios::app);
+
+            ofstream filetorder;                        /* STORE ORDER FROM CUSTOMER INTO takeAway.csv*/
+            filetorder.open("takeAway.csv", ios::app);
+
+            if (cust_type == 1){
+                filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "\n";      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
+            }else if(cust_type == 2){
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i];       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+            }
         }
 
         system("cls");
+        SetConsoleTextAttribute(h,8);
+        cout << "\n\t\t\t\t\t Selected Order Has Been Removed\n";
         show_order3();
 
     }else{
-        SetConsoleTextAttribute(h,4);
-        cout << "\n\t\t\t\t\t\t Order not found.";
-        goto cancel;
+            SetConsoleTextAttribute(h,4);
+            cout << "\n\t\t\t\t\t\t Order not found.";
+            goto cancel;
     }
-
 
 }
 
@@ -377,8 +384,8 @@ void Customer::show_order3()                 /* FUCNTION TO SHOW CUSTOMER'S ORDE
         {
             if (pno == order_arr[i])        /* FIND PRODUCT NO. THAT MATCH WITH CUSTOMER INPUT */
             {
-                amt = price * quan[c];
-                cout << "\n\t| " << setw(4) << order_arr[i] << "  | " << setw(10) << name << "\t\t\t\t|    " << setw(3) << quan[c]
+                amt = price * quan[i];
+                cout << "\n\t| " << setw(4) << order_arr[i] << "  | " << setw(10) << name << "\t\t\t\t|    " << setw(3) << quan[i]
                 << "     |   " << setw(5) << price << "    |     " << setw(5) << amt << "     | " << endl;
                 changetotal += amt;
             }

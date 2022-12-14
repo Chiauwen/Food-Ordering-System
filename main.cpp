@@ -9,8 +9,8 @@ using namespace std;
 void user_optional(string opt)               /* FUNCTION FOR USER AND ADMIN ON MAIN PAGE */
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);     /* FOR TEXT COLOUR */
-    Customer c;
-    Admin a;                                     /* CLASS OBJECT */
+    Customer c;                                     /* CLASS OBJECT */
+    Admin a;                                        /* CLASS OBJECT */
 
     if(opt == "1")
     {
@@ -18,13 +18,11 @@ void user_optional(string opt)               /* FUNCTION FOR USER AND ADMIN ON M
         c.order();
     }
 
-    //////////ADMIN LOGIN FUCTION HERE!!!//////////
     else if (opt == "2")
 	{
 		system("CLS");
 		a.adminAuthentication();
 	}
-    ///////////////////////////////////////////////
 
     else
     {
@@ -34,7 +32,6 @@ void user_optional(string opt)               /* FUNCTION FOR USER AND ADMIN ON M
         system("pause");
     }
 }
-
 
 
 int main() {                                 /* MAIN PAGE */

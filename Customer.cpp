@@ -230,10 +230,10 @@ void Customer::cancel_order()
     cancel:
     SetConsoleTextAttribute(h,7);
     cout << "\n\t---------------------------------------------------------------------------------------------------\n";
-    cout << "\t >> Which order do you want to remove? Please enter the P.NO : ";
+    cout << "\t >> Which order do you want to remove? Please enter NO : ";
     cin >> deleteorder;
 
-    int i, index = -1;
+    int i, j, index = -1;
     for(i = 0; i < c; i++)
     {
         if(order_arr[i] == deleteorder)
@@ -249,8 +249,10 @@ void Customer::cancel_order()
             // SHIFT THE ORDERS THAT ARE AFTER 'deleteorder' TO THE LEFT
             // SHIFT FROM INDEX +1 BY 1 POSITION TO THE LEFT
             order_arr[i] = order_arr[i+1];
-            quan[i] = quan[i+1];
             c--;
+
+        for(j = index ; j < c; j++)
+            quan[j] = quan[j+1];
 
         for(i = 0; i < c; i++)
         {
@@ -261,13 +263,13 @@ void Customer::cancel_order()
             filetorder.open("takeAway.csv", ios::app);
 
             if (cust_type == 1){
-                filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "\n";      /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
+                filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "\n";      /* STORE DINE IN ORDER INTO Dine.csv*/
             }else if(cust_type == 2){
-                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i] << "\n";       /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i] << "\n";  /* STORE TAKE AWAY ORDER INTO takeAway.csv*/
             }
         }
 
-        system("cls");
+        //system("cls");
         SetConsoleTextAttribute(h,8);
         cout << "\n\t\t\t\t\t Selected Order Has Been Removed\n";
         show_order3();

@@ -269,7 +269,7 @@ void Customer::cancel_order()
             }
         }
 
-        //system("cls");
+        system("cls");
         SetConsoleTextAttribute(h,8);
         cout << "\n\t\t\t\t\t Selected Order Has Been Removed\n";
         show_order3();

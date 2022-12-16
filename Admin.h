@@ -20,6 +20,7 @@ public:
 	void adminMenu();
 	void adminCheck();
 	void adminConfirm();
+	int attempt(int times);
 };
 
 #endif

@@ -12,48 +12,61 @@
 #include "Admin.h"
 using namespace std;
 
-void Admin::adminAuthentication()
+int Admin::attempt(int times)
 {
-	cin.ignore();
-	int errorTime = 0;
 	string adminUsername, adminPassword;
 
-	do
+	if (times < 2)
 	{
+		system("CLS");
+
+		cout << "Login Unsuccessful, try again!" << endl;
+
 		cout << "Admin Authentication" << endl;
+
 		cout << "Enter the Username: ";
 		getline(cin, adminUsername);
 
-		if (adminUsername == "Admin")
+		cout << "Enter the Password: ";
+		getline(cin, adminPassword);
+
+		if (adminUsername == "Admin" && adminPassword == "Admin")
 		{
-			cout << "Enter the Password: ";
-			getline(cin, adminPassword);
-
-			if (adminPassword == "Admin")
-			{
-				cout << "Login Successful!" << endl;
-
-				system("PAUSE");
-				system("cls");
-				adminMenu();
-			}
-			else
-			{
-				cout << "Password Incorrect!" << endl;
-				errorTime++;
-			}
+			system("CLS");
+			adminMenu();
 		}
-		else
-		{
-			cout << "Username does not exist!" << endl;
-			errorTime++;
-		}
-	} while (errorTime < 3);
 
-	if (errorTime < 3)
+		return times + attempt(times + 1);
+	}
+
+	else
 	{
+		system("CLS");
+		
 		cout << "Attempted 3 times still failure, force to exit the system!" << endl
 			 << endl;
+		return 0;
+	}
+}
+
+void Admin::adminAuthentication()
+{
+	cin.ignore();
+	string adminUsername, adminPassword;
+
+	cout << "Enter the Username: ";
+	getline(cin, adminUsername);
+
+	cout << "Enter the Password: ";
+	getline(cin, adminPassword);
+
+	if (adminUsername == "Admin" && adminPassword == "Admin")
+	{
+		adminMenu();
+	}
+	else
+	{
+		attempt(0);
 	}
 }
 

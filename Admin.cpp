@@ -397,6 +397,27 @@ void Admin::adminConfirm()
 
 				cout << "confirm order successfully!" << endl
 					 << endl;
+				fstream queueFile;
+                		queueFile.open("queue.txt", ios::in);
+               			int queueNum;
+                		string newQueue;
+                		queueFile >> queueNum;
+                		if (queueFile){
+                   			while (!queueFile.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+                    			{
+                        			queueFile >> queueNum;
+                        			newQueue.append(" ");
+                        			newQueue.append(to_string(queueNum));
+                    			}
+                		queueFile.close();
+              			}
+
+               			fstream queueFile2;
+                		queueFile2.open("queue.txt", ios::out);
+                		if (queueFile2){
+                    			queueFile2 << newQueue;
+                    			queueFile2.close();
+                		}
 			}
 		}
 
@@ -452,6 +473,27 @@ void Admin::adminConfirm()
 				}
 				outTakeAway << "," << foodQty[a] << endl;
 				cout << endl;
+				fstream queueFile3;
+                		queueFile3.open("queue.txt", ios::in);
+                		int queueNum;
+                		string newQueue;
+                		queueFile3 >> queueNum;
+                		if (queueFile3){
+                    			while (!file.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+                    			{
+                        			file >> queueNum;
+                        			newQueue.append(" ");
+                        			newQueue.append(to_string(queueNum));
+                    			}
+                    		queueFile3.close();
+                		}
+
+                		fstream queueFile4;
+                		queueFile4.open("queue.txt", ios::out);
+                		if (queueFile4){
+                    			queueFile4 << newQueue;
+                    			queueFile4.close();
+                		}
 			}
 		}
 

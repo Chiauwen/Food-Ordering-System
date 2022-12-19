@@ -45,6 +45,7 @@ public:
     void add_order();
     void change_option();
     void cancel_order(); /* HAVENT DONE */
+    void full_queue();
 };
 
 #endif

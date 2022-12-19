@@ -58,6 +58,38 @@ void Menu::loading()                         /* FUNCTION FOR LOADING BAR */
 void Customer::order()                       /* FUNCTION TO PLACE ORDER FROM CUSTOMER */
 {
 displaymenu:
+    file.open("queue.txt", ios::in);
+        bool full = false;
+        int queueNum;
+        int counter = 0;
+        bool emptyQueue = file.peek() == std::ifstream::traits_type::eof();
+        string newQueue;
+        if (file){
+            if (!emptyQueue){
+                while (!file.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+                {
+                    file >> queueNum;
+                    if (counter != 0){
+                        newQueue.append(" ");
+                    }
+                    newQueue.append(to_string(queueNum));
+                    counter++;
+                }
+
+                if (counter >= 30) {               /*MAX CUSTOMER 30*/
+                    full_queue();
+                    full = true;
+                } else {
+                    if (queueNum >= 30){
+                        queueNum = 0;
+                    }
+                }
+            } else {
+                queueNum = 0;
+            }
+            file.close();
+        }
+        if(!full){
 
         file.open("menu.txt", ios::in);          /* DISPLAY MENU TO CUSTOMER */
         if (file)
@@ -147,10 +179,26 @@ displaymenu:
                 cout << "\t\t--------------------------------------------------------------------------------" << endl;
 
             } while ((addp == 'y' || addp == 'Y') && (c < 15));
+            
+            fstream queueFile;
+            queueFile.open("queue.txt", ios::out);
+            bool full = false;
+            if (queueFile){
+                queueNum++;
+                if (counter != 0){
+                     newQueue.append(" ");
+                }
+                newQueue.append(to_string(queueNum));
+                queueFile << newQueue; //inserting text
+
+                queueFile.close();
+            }
+
             system("cls");
 
             show_order();                   /* CALL SHOW ORDER FUNCTION WHEN CUSTOMER KEY IN 'N' */
 
+        }
         }
 }
 
@@ -466,4 +514,12 @@ void Customer::change_option()
             cout << "\t\t\t\t\t\t Invalid input!";
             goto change;
         }
+}
+
+void Customer::full_queue() {
+    SetConsoleTextAttribute(h,6);
+    cout << "\n\t\t\t\t      *****************************************";
+    cout << "\n\t\t\t\t      |         Sorry our queue is full!       |";
+    cout << "\n\t\t\t\t      |         Please try again later        |";
+    cout << "\n\t\t\t\t      *****************************************\n\n";
 }

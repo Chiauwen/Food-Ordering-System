@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <math.h>
 #include <Windows.h>
+#include "main.h"
 
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
@@ -44,8 +45,9 @@ public:
     void show_order3();
     void add_order();
     void change_option();
-    void cancel_order(); /* HAVENT DONE */
+    void cancel_order(); 
     void full_queue();
+    void countdown();
 };
 
 #endif

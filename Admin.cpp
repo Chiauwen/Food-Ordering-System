@@ -10,8 +10,11 @@
 #include <vector>
 
 #include "Admin.h"
+#include "main.h"
+
 using namespace std;
 
+// RECURSION
 int Admin::attempt(int times)
 {
 	string adminUsername, adminPassword;
@@ -42,7 +45,7 @@ int Admin::attempt(int times)
 	else
 	{
 		system("CLS");
-		
+
 		cout << "Attempted 3 times still failure, force to exit the system!" << endl
 			 << endl;
 		return 0;
@@ -62,15 +65,15 @@ void Admin::adminAuthentication()
 
 	if (adminUsername == "Admin" && adminPassword == "Admin")
 	{
-		adminMenu();
+		adminMenu(); // if the username and password correct then go menu
 	}
 	else
 	{
-		attempt(0);
+		attempt(0); // if false go to recursion
 	}
 }
 
-void Admin::adminMenu()
+int Admin::adminMenu()
 {
 	int optionChoice;
 	bool optionLoop = false;
@@ -80,6 +83,7 @@ void Admin::adminMenu()
 		cout << "Admin Menu" << endl;
 		cout << "1. Check Order" << endl;
 		cout << "2. Confirm Order" << endl;
+		cout << "3. Return to Main Menu" << endl;
 		cout << "Enter the Option: ";
 		cin >> optionChoice;
 
@@ -92,6 +96,10 @@ void Admin::adminMenu()
 		case 2:
 			cout << endl;
 			adminConfirm();
+			break;
+		case 3:
+			cout << endl;
+			return mainPage();
 			break;
 		default:
 			cout << "Invalid Input! Only 1 or 2 is allowed!" << endl
@@ -397,27 +405,31 @@ void Admin::adminConfirm()
 
 				cout << "confirm order successfully!" << endl
 					 << endl;
-				fstream queueFile;
-                		queueFile.open("queue.txt", ios::in);
-               			int queueNum;
-                		string newQueue;
-                		queueFile >> queueNum;
-                		if (queueFile){
-                   			while (!queueFile.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
-                    			{
-                        			queueFile >> queueNum;
-                        			newQueue.append(" ");
-                        			newQueue.append(to_string(queueNum));
-                    			}
-                		queueFile.close();
-              			}
 
-               			fstream queueFile2;
-                		queueFile2.open("queue.txt", ios::out);
-                		if (queueFile2){
-                    			queueFile2 << newQueue;
-                    			queueFile2.close();
-                		}
+				// queue
+				fstream queueFile;
+				queueFile.open("queue.txt", ios::in);
+				int queueNum;
+				string newQueue;
+				queueFile >> queueNum;
+				if (queueFile)
+				{
+					while (!queueFile.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+					{
+						queueFile >> queueNum;
+						newQueue.append(" ");
+						newQueue.append(to_string(queueNum));
+					}
+					queueFile.close();
+				}
+
+				fstream queueFile2;
+				queueFile2.open("queue.txt", ios::out);
+				if (queueFile2)
+				{
+					queueFile2 << newQueue;
+					queueFile2.close();
+				}
 			}
 		}
 
@@ -471,29 +483,38 @@ void Admin::adminConfirm()
 						outTakeAway << "," << foodID[a];
 					}
 				}
-				outTakeAway << "," << foodQty[a] << endl;
-				cout << endl;
-				fstream queueFile3;
-                		queueFile3.open("queue.txt", ios::in);
-                		int queueNum;
-                		string newQueue;
-                		queueFile3 >> queueNum;
-                		if (queueFile3){
-                    			while (!file.eof())             /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
-                    			{
-                        			file >> queueNum;
-                        			newQueue.append(" ");
-                        			newQueue.append(to_string(queueNum));
-                    			}
-                    		queueFile3.close();
-                		}
 
-                		fstream queueFile4;
-                		queueFile4.open("queue.txt", ios::out);
-                		if (queueFile4){
-                    			queueFile4 << newQueue;
-                    			queueFile4.close();
-                		}
+				outTakeAway << "," << foodQty[a] << endl;
+
+				cout << endl;
+
+				// queue
+				fstream queueFile3;
+
+				queueFile3.open("queue.txt", ios::in);
+
+				int queueNum;
+				string newQueue;
+
+				queueFile3 >> queueNum;
+				if (queueFile3)
+				{
+					while (!queueFile3.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+					{
+						queueFile3 >> queueNum;
+						newQueue.append(" ");
+						newQueue.append(to_string(queueNum));
+					}
+					queueFile3.close();
+				}
+
+				fstream queueFile4;
+				queueFile4.open("queue.txt", ios::out);
+				if (queueFile4)
+				{
+					queueFile4 << newQueue;
+					queueFile4.close();
+				}
 			}
 		}
 

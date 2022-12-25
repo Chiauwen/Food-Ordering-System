@@ -8,6 +8,7 @@
 #include <math.h>
 #include <Windows.h>
 #include <vector>
+#include "main.h"
 
 #ifndef ADMIN_H
 #define ADMIN_H
@@ -17,7 +18,7 @@ class Admin
 {
 public:
 	void adminAuthentication();
-	void adminMenu();
+	int adminMenu();
 	void adminCheck();
 	void adminConfirm();
 	int attempt(int times);

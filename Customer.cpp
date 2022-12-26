@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 void Menu::menu() /* FUNCTION TO DISPLAY MENU FROM MENU.TXT */
 {
     system("cls");
@@ -204,7 +205,6 @@ displaymenu:
 
                     if (quan[c] >= 1 && quan[c] <= 10)
                     {
-
                         c++;
                     }
                     else
@@ -272,11 +272,11 @@ displaymenu:
         {
             if (cust_type == 1)
             {
-                filedorder << table_no << "," << order_arr[x] << "," << quan[x] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
+                filedorder << table_no << "," << order_arr[x] << "," << quan[x] << "," << "PENDING" << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
             }
             else if (cust_type == 2)
             {
-                filetorder << cust_name << "," << cust_phone << "," << order_arr[x] << "," << quan[x] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[x] << "," << quan[x] << "," << "PENDING" << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
             }
         }
 
@@ -300,11 +300,11 @@ displaymenu:
                 {
                     if (cust_type == 1)
                     {
-                        filedorder << table_no << "," << order_arr[c] << "," << quan[c] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
+                        filedorder << table_no << "," << order_arr[c] << "," << quan[c] << "," << "PENDING" << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
                     }
                     else if (cust_type == 2)
                     {
-                        filetorder << cust_name << "," << cust_phone << "," << order_arr[c] << "," << quan[c] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+                        filetorder << cust_name << "," << cust_phone << "," << order_arr[c] << "," << quan[c] << "," << "PENDING" << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
                     }
                     c++; /* ORDER +1 */
                 }
@@ -373,11 +373,11 @@ cancel:
 
             if (cust_type == 1)
             {
-                filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "\n"; /* STORE DINE IN ORDER INTO Dine.csv*/
+                filedorder << table_no << "," << order_arr[i] << "," << quan[i] << "," << "PENDING" << "\n"; /* STORE DINE IN ORDER INTO Dine.csv*/
             }
             else if (cust_type == 2)
             {
-                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i] << "\n"; /* STORE TAKE AWAY ORDER INTO takeAway.csv*/
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[i] << "," << quan[i] << "," << "PENDING" << "\n"; /* STORE TAKE AWAY ORDER INTO takeAway.csv*/
             }
         }
 
@@ -571,11 +571,11 @@ change:
         {
             if (cust_type == 1)
             {
-                filedorder << table_no << "," << order_arr[x] << "," << quan[x] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
+                filedorder << table_no << "," << order_arr[x] << "," << quan[x] << "," << status << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO Dine.csv*/
             }
             else if (cust_type == 2)
             {
-                filetorder << cust_name << "," << cust_phone << "," << order_arr[x] << "," << quan[x] << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
+                filetorder << cust_name << "," << cust_phone << "," << order_arr[x] << "," << quan[x] << "," << status << endl; /* IF QUANTITY IS IN THE RANGE, THEN STORE DINE IN ORDER INTO takeAway.csv*/
             }
         }
 

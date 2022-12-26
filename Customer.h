@@ -23,6 +23,7 @@ protected:
     int pno;
     string name;
     float price;
+    const string status="PENDING";
 
 public:
     void menu();

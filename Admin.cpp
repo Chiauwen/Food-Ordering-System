@@ -69,7 +69,7 @@ void Admin::adminAuthentication()
 	}
 	else
 	{
-		attempt(0); // if false go to recursion
+		attempt(0); // if false go to attempt()
 	}
 }
 
@@ -116,8 +116,12 @@ void Admin::adminCheck()
 	int commaIndex1;
 	int commaIndex2;
 	int commaIndex3;
+	int commaIndex4;
 	int optionChoice;
 	string line;
+
+	// Order Status
+	string status[15];
 
 	// Dine In
 	string tempTableNo;
@@ -145,6 +149,7 @@ void Admin::adminCheck()
 	readDineIn.open("Dine.csv");
 	readTakeAway.open("takeAway.csv");
 
+	// Read Menu
 	while (!readMenu.eof())
 	{
 		readMenu >> productID[z] >> productName[z] >> productPrice[z];
@@ -152,6 +157,7 @@ void Admin::adminCheck()
 	}
 	readMenu.close();
 
+	/*    Customer   */
 	while (!readTakeAway.eof())
 	{
 		getline(readTakeAway, line);
@@ -166,6 +172,10 @@ void Admin::adminCheck()
 			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
 			foodID[i - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
 			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
+
+			commaIndex4 = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3).find(",");
+			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
+
 			// cout << "Username: " << userName[i - 1] << endl;
 			// cout << "Phone Number: " << userPhone[i - 1] << endl;
 			// cout << "Food ID: " << foodID[i - 1] << endl;
@@ -187,8 +197,10 @@ void Admin::adminCheck()
 
 			commaIndex2 = line.substr(commaIndex1 + 1).find(",");
 			orderID[j - 1] = line.substr(commaIndex1 + 1, commaIndex2);
-
 			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2);
+
+			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
+			status[i - 1] = line.substr(0, commaIndex4);
 
 			/*cout << "Table No: " << tableNo[j - 1] << endl;
 			cout << "Order ID: " << orderID[j - 1] << endl;
@@ -235,6 +247,7 @@ void Admin::adminCheck()
 					}
 				}
 				cout << "Quantity: " << orderQty[a] << endl;
+				// cout << "Order Status: " << status[a] << endl;
 				cout << endl;
 			}
 		}
@@ -285,6 +298,7 @@ void Admin::adminConfirm()
 	int commaIndex1;
 	int commaIndex2;
 	int commaIndex3;
+	int commaIndex4;
 	int optionChoice;
 	bool confirmDineIn = false, confirmTakeAway = false;
 	string line;

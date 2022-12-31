@@ -1,4 +1,5 @@
-name,phone,order,quan,status
-,,,
-chiauwen,01039287267,1,5,PENDING
-chiauwen,01039287267,2,1,PENDING
+name,phone,food,quantity,status
+,,,,PENDING
+chiauwen,032013010,12,4,CONFRIMED
+chiauwen,032013010,5,2,CONFRIMED
+,,,,PENDING

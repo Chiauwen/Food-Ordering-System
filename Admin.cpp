@@ -107,9 +107,10 @@ int Admin::adminMenu()
 		cout << "\n\t\t\t\t ------------------------------------------- \n\n\n";
 		SetConsoleTextAttribute(a, 15);
 
-		cout << "\t\t\t\t 1. Check Order" << endl;
+		cout << "\t\t\t\t 1. Check All Order" << endl;
 		cout << "\n\t\t\t\t 2. Confirm Order" << endl;
-		cout << "\n\t\t\t\t 3. Return to Main Menu" << endl;
+		cout << "\n\t\t\t\t 3. Check All Confirmed Order" << endl;
+		cout << "\n\t\t\t\t 4. Return to Main Menu" << endl;
 		cout << "\n\n \t\t Enter the Option: ";
 		cin >> optionChoice;
 
@@ -124,6 +125,10 @@ int Admin::adminMenu()
 			adminConfirm();
 			break;
 		case 3:
+			cout << endl;
+			checkConfirmed();
+			break;
+		case 4:
 			cout << endl;
 			return mainPage();
 			break;
@@ -168,9 +173,6 @@ void Admin::adminCheck()
 	int productID[15];
 	float productPrice[15];
 	string productName[15];
-
-	// Find data
-	bool found = false;
 
 	// File Structure
 	ifstream readMenu;
@@ -225,7 +227,7 @@ void Admin::adminCheck()
 
 			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
 			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
-			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
+			status[j - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
 		}
 		j++;
 	}
@@ -251,6 +253,9 @@ void Admin::adminCheck()
 	case 1:
 		do
 		{
+			// Find data
+			bool findDine = false;
+
 			system("CLS");
 			cin.ignore();
 			cout << endl;
@@ -290,11 +295,11 @@ void Admin::adminCheck()
 			cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
-			for (int b = 0; b < j - 1; b++)
+			for (int b = 0; b < j; b++)
 			{
 				if (tableNo[b] == tempTableNo)
 				{
-					found = true;
+					findDine = true;
 					for (int p = 0; p < z; p++)
 					{
 						if (stoi(orderID[b]) == productID[p])
@@ -308,7 +313,7 @@ void Admin::adminCheck()
 				}
 			}
 
-			if (!found)
+			if (!findDine)
 			{
 				SetConsoleTextAttribute(a, 12);
 				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
@@ -326,6 +331,7 @@ void Admin::adminCheck()
 	case 2:
 		do
 		{
+			bool findTake = false;
 			cin.ignore();
 			cout << endl;
 
@@ -368,7 +374,7 @@ void Admin::adminCheck()
 			{
 				if (userName[b] == tempUserName)
 				{
-					found = true;
+					findTake = true;
 					cout << "\t\t\t\t Phone Number: " << userPhone[b] << endl;
 					for (int p = 0; p < z; p++)
 					{
@@ -383,7 +389,7 @@ void Admin::adminCheck()
 				}
 			}
 
-			if (!found)
+			if (!findTake)
 			{
 				SetConsoleTextAttribute(a, 12);
 				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
@@ -417,9 +423,6 @@ void Admin::adminConfirm()
 
 	// return main menu
 	char ans;
-
-	// find data
-	bool found = false;
 
 	// Order Status
 	string status[15];
@@ -507,6 +510,8 @@ void Admin::adminConfirm()
 	outDineIn.open("confirmDine.csv", ios::app);
 	outTakeAway.open("confirmtakeAway.csv", ios::app);
 
+	system("CLS");
+
 	cout << "\n\n\t\t\t\t\t CONFIRM ORDER OPTION LIST" << endl;
 	SetConsoleTextAttribute(a, 3);
 	cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
@@ -520,13 +525,14 @@ void Admin::adminConfirm()
 	SetConsoleTextAttribute(a, 15);
 	cin >> optionChoice;
 
-	system("CLS");
-
 	switch (optionChoice)
 	{
 	case 1:
 		do
 		{
+			// find data
+			bool findConfirmDine = false;
+
 			system("CLS");
 
 			cin.ignore();
@@ -564,7 +570,7 @@ void Admin::adminConfirm()
 			{
 				if (tableNo[b] == tempTableNo)
 				{
-					found = true;
+					findConfirmDine = true;
 					confirmDineIn = true;
 
 					outDineIn << tableNo[b];
@@ -582,7 +588,8 @@ void Admin::adminConfirm()
 					outDineIn << "," << orderQty[b] << endl;
 
 					SetConsoleTextAttribute(a, 6);
-					cout << "\n\n \t\t\t confirm order successfully!" << endl
+					cout << "\n \t\t\t\t -------------------------------------------------";
+					cout << "\n\n \t\t\t\t\t ORDER CONFIRMED SUCCESSFULLY!" << endl
 						 << endl;
 					SetConsoleTextAttribute(a, 15);
 
@@ -613,12 +620,12 @@ void Admin::adminConfirm()
 				}
 			}
 
-			if (found = true)
+			if (findConfirmDine = true)
 			{
 				if (confirmDineIn)
 				{
 					resetDineIn.open("Dine.csv", ios::out);
-					for (int b = 0; b < j - 1; b++)
+					for (int b = 0; b < j; b++)
 					{
 						if (tableNo[b] != tempTableNo)
 						{
@@ -640,17 +647,6 @@ void Admin::adminConfirm()
 					{
 						if (tableNo[b] == tempTableNo)
 						{
-							if (b == 0)
-							{
-								resetDineIn << "tableno"
-											<< ","
-											<< "order"
-											<< ","
-											<< "quantity"
-											<< ","
-											<< "status"
-											<< endl;
-							}
 							status[b] = "CONFIRMED";
 							resetDineIn << tableNo[b] << "," << orderID[b] << "," << orderQty[b] << "," << status[b] << endl;
 						}
@@ -675,6 +671,10 @@ void Admin::adminConfirm()
 	case 2:
 		do
 		{
+			// find data
+			bool findConfirmTake = false;
+			system("CLS");
+
 			cin.ignore();
 			cout << endl;
 
@@ -727,7 +727,8 @@ void Admin::adminConfirm()
 					outTakeAway << "," << foodQty[b] << endl;
 
 					SetConsoleTextAttribute(a, 6);
-					cout << "\n\n \t\t\t confirm order successfully!" << endl
+					cout << "\n \t\t\t\t -------------------------------------------------";
+					cout << "\n\n \t\t\t\t ORDER CONFIRMED SUCCESSFULLY!" << endl
 						 << endl;
 					SetConsoleTextAttribute(a, 15);
 
@@ -763,55 +764,64 @@ void Admin::adminConfirm()
 				}
 			}
 
-			if (confirmTakeAway)
+			if (findConfirmTake = true)
 			{
-				resetTakeAway.open("takeAway.csv", ios::out);
-				for (int b = 0; b < i - 1; b++)
+				if (confirmTakeAway)
 				{
-					if (userName[b] != tempUserName)
+					resetTakeAway.open("takeAway.csv", ios::out);
+					for (int b = 0; b < i - 1; b++)
 					{
-						if (b == 0)
+						if (userName[b] != tempUserName)
 						{
-							resetTakeAway << "name"
-										  << ","
-										  << "phone"
-										  << ","
-										  << "food"
-										  << ","
-										  << "quantity"
-										  << ","
-										  << "status"
-										  << endl;
+							if (b == 0)
+							{
+								resetTakeAway << "name"
+											  << ","
+											  << "phone"
+											  << ","
+											  << "food"
+											  << ","
+											  << "quantity"
+											  << ","
+											  << "status"
+											  << endl;
+							}
+							status[b] = "PENDING";
+							resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
 						}
-						status[b] = "PENDING";
-						resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
-					}
-					if (userName[b] == tempUserName)
-					{
-						if (b == 0)
+						if (userName[b] == tempUserName)
 						{
-							resetTakeAway << "name"
-										  << ","
-										  << "phone"
-										  << ","
-										  << "food"
-										  << ","
-										  << "quantity"
-										  << ","
-										  << "status"
-										  << endl;
+							if (b == 0)
+							{
+								resetTakeAway << "name"
+											  << ","
+											  << "phone"
+											  << ","
+											  << "food"
+											  << ","
+											  << "quantity"
+											  << ","
+											  << "status"
+											  << endl;
+							}
+							status[b] = "CONFRIMED";
+							resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
 						}
-						status[b] = "CONFRIMED";
-						resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
 					}
+					resetTakeAway.close();
 				}
-				resetTakeAway.close();
-
+				else
+				{
+					SetConsoleTextAttribute(a, 12);
+					cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+					SetConsoleTextAttribute(a, 15);
+				}
 				cout << "\n\n\t\t\t\t Return to Admin Menu: ";
 				cin >> ans;
 
 				tolower(ans);
 			}
+
 		} while (ans != 'y');
 
 		break;
@@ -824,4 +834,268 @@ void Admin::adminConfirm()
 
 	outDineIn.close();
 	outTakeAway.close();
+}
+
+void Admin::checkConfirmed()
+{
+	system("CLS");
+
+	// Variables
+	int i = 0, j = 0, z = 0;
+	int commaIndex1;
+	int commaIndex2;
+	int commaIndex3;
+	int commaIndex4;
+	int optionChoice;
+	char ans;
+	string line;
+
+	// Order Status
+	string status[15];
+
+	// Dine In
+	string tempTableNo;
+	string tableNo[15];
+	string orderID[15];
+	string orderQty[15];
+
+	// Delivery
+	string tempUserName;
+	string foodID[15];
+	string foodQty[15];
+	string userName[15], userPhone[15];
+
+	// Product
+	int productID[15];
+	float productPrice[15];
+	string productName[15];
+
+	// Find data
+	bool found = false;
+
+	// File Structure
+	ifstream readMenu;
+	ifstream readDineIn;
+	ifstream readTakeAway;
+
+	readMenu.open("menu.txt", ios::in);
+	readDineIn.open("confirmDine.csv", ios::in);
+	readTakeAway.open("confirmtakeAway.csv", ios::in);
+
+	while (!readMenu.eof())
+	{
+		readMenu >> productID[z] >> productName[z] >> productPrice[z];
+		z++;
+	}
+	readMenu.close();
+
+	/*    Customer   */
+	while (!readTakeAway.eof())
+	{
+		getline(readTakeAway, line);
+		if (i > 1)
+		{
+			commaIndex1 = line.find(",");
+			userName[i - 1] = line.substr(0, commaIndex1);
+
+			commaIndex2 = line.substr(commaIndex1 + 1).find(",");
+			userPhone[i - 1] = line.substr(commaIndex1 + 1, commaIndex2);
+
+			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
+			foodID[i - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
+
+			commaIndex4 = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3).find(",");
+			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
+		}
+		// readDineIn >> line;
+		i++;
+	}
+
+	readTakeAway.close();
+	while (!readDineIn.eof())
+	{
+		getline(readDineIn, line);
+		if (j > 1)
+		{
+			commaIndex1 = line.find(",");
+			tableNo[j - 1] = line.substr(0, commaIndex1);
+
+			commaIndex2 = line.substr(commaIndex1 + 1).find(",");
+			orderID[j - 1] = line.substr(commaIndex1 + 1, commaIndex2);
+
+			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
+			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
+		}
+		j++;
+	}
+	readDineIn.close();
+
+	cout << "\n\n\t\t\t\t\t\t CHECK CONFIRMED ORDER" << endl;
+	SetConsoleTextAttribute(a, 3);
+	cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+	SetConsoleTextAttribute(a, 15);
+
+	cout << "\t\t\t\t 1. Dine In" << endl;
+	cout << "\n\t\t\t\t 2. Take Away" << endl;
+
+	SetConsoleTextAttribute(a, 14);
+	cout << "\n\n\t\t\tEnter the Option: ";
+	SetConsoleTextAttribute(a, 15);
+	cin >> optionChoice;
+
+	system("CLS");
+
+	switch (optionChoice)
+	{
+	case 1:
+		do
+		{
+			system("CLS");
+			cin.ignore();
+			cout << endl;
+
+			cout << "\n\n\t\t\t\t\t\t TABLE NO" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < j - 1; b++)
+			{
+				int c;
+				for (c = 0; c < b; c++)
+					if (tableNo[b] == tableNo[c])
+						break;
+				if (b == c)
+				{
+					if (tableNo[b] != "")
+					{
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Table Number: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << tableNo[b] << endl
+							 << endl;
+					}
+				}
+			}
+
+			cout << "\n\n\t\t\t\tEnter table number: ";
+			getline(cin, tempTableNo);
+			cout << endl;
+
+			system("CLS");
+
+			cout << "\n\n\t\t\t\t\t\t CHECKING CONFIRMED ORDER" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < j; b++)
+			{
+				if (tableNo[b] == tempTableNo)
+				{
+					found = true;
+					for (int p = 0; p < z; p++)
+					{
+						if (stoi(orderID[b]) == productID[p])
+						{
+							cout << "\t\t\t\t Food: " << productName[p] << endl;
+						}
+					}
+					cout << "\t\t\t\t Quantity: " << orderQty[b] << endl;
+					cout << endl;
+				}
+			}
+
+			if (!found)
+			{
+				SetConsoleTextAttribute(a, 12);
+				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+				SetConsoleTextAttribute(a, 15);
+			}
+
+			cout << "\n\n\t\t\t\t Return to Admin Menu(y/n): ";
+			cin >> ans;
+
+			tolower(ans);
+
+		} while (ans != 'y');
+
+		break;
+	case 2:
+		do
+		{
+			cin.ignore();
+			cout << endl;
+
+			cout << "\n\n\t\t\t\t\t\t CUSTOMER NAME" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < i - 2; b++)
+			{
+				int c;
+				for (c = 0; c < b; c++)
+					if (userName[b] == userName[c])
+						break;
+				if (b == c)
+				{
+					if (userName[b] != "")
+					{
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Customer: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << userName[b] << endl
+							 << endl;
+					}
+				}
+			}
+
+			cout << "\t\t\tEnter Customer Name: ";
+			getline(cin, tempUserName);
+			cout << endl;
+
+			system("CLS");
+
+			cout << "\n\n\t\t\t\t\t\t CHECKING ORDER" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < i - 1; b++)
+			{
+				if (userName[b] == tempUserName)
+				{
+					found = true;
+					cout << "\t\t\t\t Phone Number: " << userPhone[b] << endl;
+					for (int p = 0; p < z; p++)
+					{
+						if (stoi(foodID[b]) == productID[p])
+						{
+							cout << "\t\t\t\t Food: " << productName[p] << endl;
+						}
+					}
+					cout << "\t\t\t\t Quantity: " << foodQty[b] << endl;
+					cout << endl;
+				}
+			}
+
+			if (!found)
+			{
+				SetConsoleTextAttribute(a, 12);
+				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+				SetConsoleTextAttribute(a, 15);
+			}
+
+			cout << "\n\n\t\t\t\t Return to Admin Menu: ";
+			cin >> ans;
+
+			tolower(ans);
+		} while (ans != 'y');
+
+		break;
+	default:
+		cout << "Invalid Input! Only 1 and 2 is allowed!" << endl;
+		break;
+	}
 }

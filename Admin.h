@@ -28,7 +28,8 @@ public:
 	void checkDine();
 
 	// confirm order
-	void adminConfirm();;
+	void adminConfirm();
+	void checkConfirmed();
 
 	// login authentication
 	int attempt(int times);

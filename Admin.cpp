@@ -23,14 +23,22 @@ int Admin::attempt(int times)
 	{
 		system("CLS");
 
-		cout << "Login Unsuccessful, try again!" << endl;
+		SetConsoleTextAttribute(a, 3);
+		cout << "\n\t\t\t\t --------------------------------------------- \n";
+		SetConsoleTextAttribute(a, 15);
+		cout << "\t\t\t\t\t\t ADMIN LOGIN";
+		SetConsoleTextAttribute(a, 3);
+		cout << "\n\t\t\t\t --------------------------------------------- \n\n\n";
 
-		cout << "Admin Authentication" << endl;
+		SetConsoleTextAttribute(a, 12);
+		cout << "\t\t\t Login Unsuccessful, try again! \n\n"
+			 << endl;
 
-		cout << "Enter the Username: ";
+		SetConsoleTextAttribute(a, 15);
+		cout << "\t\t\t Enter the Username: ";
 		getline(cin, adminUsername);
 
-		cout << "Enter the Password: ";
+		cout << "\t\t\t Enter the Password: ";
 		getline(cin, adminPassword);
 
 		if (adminUsername == "Admin" && adminPassword == "Admin")
@@ -46,8 +54,12 @@ int Admin::attempt(int times)
 	{
 		system("CLS");
 
-		cout << "Attempted 3 times still failure, force to exit the system!" << endl
+		SetConsoleTextAttribute(a, 12);
+		cout << "\n\n\t\t\t Attempted 3 times still failure, force to exit the system!\n\n"
+			 << endl
 			 << endl;
+
+		SetConsoleTextAttribute(a, 15);
 		return 0;
 	}
 }
@@ -57,14 +69,23 @@ void Admin::adminAuthentication()
 	cin.ignore();
 	string adminUsername, adminPassword;
 
-	cout << "Enter the Username: ";
+	SetConsoleTextAttribute(a, 3);
+	cout << "\n\t\t\t\t --------------------------------------------- \n";
+	SetConsoleTextAttribute(a, 15);
+	cout << "\t\t\t\t\t\t ADMIN LOGIN";
+	SetConsoleTextAttribute(a, 3);
+	cout << "\n\t\t\t\t --------------------------------------------- \n\n\n";
+
+	SetConsoleTextAttribute(a, 15);
+	cout << "\t\t\t Enter the Username: ";
 	getline(cin, adminUsername);
 
-	cout << "Enter the Password: ";
+	cout << "\t\t\t Enter the Password: ";
 	getline(cin, adminPassword);
 
 	if (adminUsername == "Admin" && adminPassword == "Admin")
 	{
+		system("CLS");
 		adminMenu(); // if the username and password correct then go menu
 	}
 	else
@@ -80,11 +101,16 @@ int Admin::adminMenu()
 
 	do
 	{
-		cout << "Admin Menu" << endl;
-		cout << "1. Check Order" << endl;
-		cout << "2. Confirm Order" << endl;
-		cout << "3. Return to Main Menu" << endl;
-		cout << "Enter the Option: ";
+		system("CLS");
+		cout << "\n\n\t\t\t\t\t\t ADMIN MENU" << endl;
+		SetConsoleTextAttribute(a, 3);
+		cout << "\n\t\t\t\t ------------------------------------------- \n\n\n";
+		SetConsoleTextAttribute(a, 15);
+
+		cout << "\t\t\t\t 1. Check Order" << endl;
+		cout << "\n\t\t\t\t 2. Confirm Order" << endl;
+		cout << "\n\t\t\t\t 3. Return to Main Menu" << endl;
+		cout << "\n\n \t\t Enter the Option: ";
 		cin >> optionChoice;
 
 		switch (optionChoice)
@@ -111,6 +137,8 @@ int Admin::adminMenu()
 
 void Admin::adminCheck()
 {
+	system("CLS");
+
 	// Variables
 	int i = 0, j = 0, z = 0;
 	int commaIndex1;
@@ -118,6 +146,7 @@ void Admin::adminCheck()
 	int commaIndex3;
 	int commaIndex4;
 	int optionChoice;
+	char ans;
 	string line;
 
 	// Order Status
@@ -140,6 +169,9 @@ void Admin::adminCheck()
 	float productPrice[15];
 	string productName[15];
 
+	// Find data
+	bool found = false;
+
 	// File Structure
 	ifstream readMenu;
 	ifstream readDineIn;
@@ -149,7 +181,6 @@ void Admin::adminCheck()
 	readDineIn.open("Dine.csv");
 	readTakeAway.open("takeAway.csv");
 
-	// Read Menu
 	while (!readMenu.eof())
 	{
 		readMenu >> productID[z] >> productName[z] >> productPrice[z];
@@ -171,16 +202,10 @@ void Admin::adminCheck()
 
 			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
 			foodID[i - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
-			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
 
 			commaIndex4 = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3).find(",");
-			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
-
-			// cout << "Username: " << userName[i - 1] << endl;
-			// cout << "Phone Number: " << userPhone[i - 1] << endl;
-			// cout << "Food ID: " << foodID[i - 1] << endl;
-			// cout << "Food Qty: " << foodQty[i - 1] << endl;
-			// cout << line << endl;
+			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
+			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + commaIndex4 + 4);
 		}
 		// readDineIn >> line;
 		i++;
@@ -197,93 +222,180 @@ void Admin::adminCheck()
 
 			commaIndex2 = line.substr(commaIndex1 + 1).find(",");
 			orderID[j - 1] = line.substr(commaIndex1 + 1, commaIndex2);
-			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2);
 
 			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
-			status[i - 1] = line.substr(0, commaIndex4);
-
-			/*cout << "Table No: " << tableNo[j - 1] << endl;
-			cout << "Order ID: " << orderID[j - 1] << endl;
-			cout << "Order Quantity: " << orderQty[j - 1] << endl;
-			cout << endl;*/
+			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
+			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
 		}
 		j++;
 	}
 	readDineIn.close();
 
-	cout << "Check Order Option List" << endl;
-	cout << "1. Dine In" << endl;
-	cout << "2. Take Away" << endl;
-	cout << "Enter the Option: ";
+	cout << "\n\n\t\t\t\t\t\t CHECK ORDER OPTION LIST" << endl;
+	SetConsoleTextAttribute(a, 3);
+	cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+	SetConsoleTextAttribute(a, 15);
+
+	cout << "\t\t\t\t 1. Dine In" << endl;
+	cout << "\n\t\t\t\t 2. Take Away" << endl;
+
+	SetConsoleTextAttribute(a, 14);
+	cout << "\n\n\t\t\tEnter the Option: ";
+	SetConsoleTextAttribute(a, 15);
 	cin >> optionChoice;
+
+	system("CLS");
 
 	switch (optionChoice)
 	{
 	case 1:
-		cin.ignore();
-		cout << endl;
-
-		for (int a = 0; a < j - 1; a++)
+		do
 		{
-			if (tableNo[a] != "")
-			{
-				cout << "Table No: " << tableNo[a] << endl;
-			}
-		}
-		cout << "Enter the Table No: ";
-		getline(cin, tempTableNo);
-		cout << endl;
+			system("CLS");
+			cin.ignore();
+			cout << endl;
 
-		for (int a = 0; a < j - 1; a++)
-		{
-			if (tableNo[a] == tempTableNo)
+			cout << "\n\n\t\t\t\t\t\t TABLE NO" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < j - 1; b++)
 			{
-				cout << "Table No: " << tableNo[a] << endl;
-				for (int p = 0; p < z; p++)
+				int c;
+				for (c = 0; c < b; c++)
+					if (tableNo[b] == tableNo[c])
+						break;
+				if (b == c)
 				{
-					if (stoi(orderID[a]) == productID[p])
+					if (tableNo[b] != "")
 					{
-						cout << "Food Name: " << productName[p] << endl;
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Table Number: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << tableNo[b] << endl
+							 << endl;
 					}
 				}
-				cout << "Quantity: " << orderQty[a] << endl;
-				// cout << "Order Status: " << status[a] << endl;
-				cout << endl;
 			}
-		}
+
+			cout << "\n\n\t\t\t\tEnter table number: ";
+			getline(cin, tempTableNo);
+			cout << endl;
+
+			system("CLS");
+
+			cout << "\n\n\t\t\t\t\t\t CHECKING ORDER" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < j - 1; b++)
+			{
+				if (tableNo[b] == tempTableNo)
+				{
+					found = true;
+					for (int p = 0; p < z; p++)
+					{
+						if (stoi(orderID[b]) == productID[p])
+						{
+							cout << "\t\t\t\t Food: " << productName[p] << endl;
+						}
+					}
+					cout << "\t\t\t\t Quantity: " << orderQty[b] << endl;
+					cout << "\t\t\t\t Order Status: " << status[b] << endl;
+					cout << endl;
+				}
+			}
+
+			if (!found)
+			{
+				SetConsoleTextAttribute(a, 12);
+				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+				SetConsoleTextAttribute(a, 15);
+			}
+
+			cout << "\n\n\t\t\t\t Return to Admin Menu(y/n): ";
+			cin >> ans;
+
+			tolower(ans);
+
+		} while (ans != 'y');
+
 		break;
 	case 2:
-		cin.ignore();
-		cout << endl;
-
-		for (int a = 0; a < i - 1; a++)
+		do
 		{
-			if (userName[a] != "")
-			{
-				cout << "User Name: " << userName[a] << endl;
-			}
-		}
-		cout << "Enter the User Name: ";
-		getline(cin, tempUserName);
-		cout << endl;
+			cin.ignore();
+			cout << endl;
 
-		for (int a = 0; a < i - 1; a++)
-		{
-			if (userName[a] == tempUserName)
+			cout << "\n\n\t\t\t\t\t\t CUSTOMER NAME" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < i - 2; b++)
 			{
-				cout << "Username: " << userName[a] << endl;
-				cout << "Phone Number: " << userPhone[a] << endl;
-				for (int p = 0; p < z; p++)
+				int c;
+				for (c = 0; c < b; c++)
+					if (userName[b] == userName[c])
+						break;
+				if (b == c)
 				{
-					if (stoi(foodID[a]) == productID[p])
+					if (userName[b] != "")
 					{
-						cout << "Food Name: " << productName[p] << endl;
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Customer: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << userName[b] << endl
+							 << endl;
 					}
 				}
-				cout << "Quantity: " << foodQty[a] << endl;
-				cout << endl;
 			}
-		}
+
+			cout << "\t\t\tEnter Customer Name: ";
+			getline(cin, tempUserName);
+			cout << endl;
+
+			system("CLS");
+
+			cout << "\n\n\t\t\t\t\t\t CHECKING ORDER" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < i - 1; b++)
+			{
+				if (userName[b] == tempUserName)
+				{
+					found = true;
+					cout << "\t\t\t\t Phone Number: " << userPhone[b] << endl;
+					for (int p = 0; p < z; p++)
+					{
+						if (stoi(foodID[b]) == productID[p])
+						{
+							cout << "\t\t\t\t Food: " << productName[p] << endl;
+						}
+					}
+					cout << "\t\t\t\t Quantity: " << foodQty[b] << endl;
+					cout << "\t\t\t\t Order Status: " << status[b] << endl;
+					cout << endl;
+				}
+			}
+
+			if (!found)
+			{
+				SetConsoleTextAttribute(a, 12);
+				cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+				SetConsoleTextAttribute(a, 15);
+			}
+
+			cout << "\n\n\t\t\t\t Return to Admin Menu: ";
+			cin >> ans;
+
+			tolower(ans);
+		} while (ans != 'y');
+
 		break;
 	default:
 		cout << "Invalid Input! Only 1 and 2 is allowed!" << endl;
@@ -302,6 +414,15 @@ void Admin::adminConfirm()
 	int optionChoice;
 	bool confirmDineIn = false, confirmTakeAway = false;
 	string line;
+
+	// return main menu
+	char ans;
+
+	// find data
+	bool found = false;
+
+	// Order Status
+	string status[15];
 
 	// Dine In
 	string tempTableNo;
@@ -354,7 +475,11 @@ void Admin::adminConfirm()
 
 			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
 			foodID[i - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
-			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
+			// foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
+
+			commaIndex4 = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3).find(",");
+			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
+			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + commaIndex4 + 4);
 		}
 		i++;
 	}
@@ -371,192 +496,327 @@ void Admin::adminConfirm()
 			commaIndex2 = line.substr(commaIndex1 + 1).find(",");
 			orderID[j - 1] = line.substr(commaIndex1 + 1, commaIndex2);
 
-			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2);
+			commaIndex3 = line.substr(commaIndex1 + commaIndex2 + 2).find(",");
+			orderQty[j - 1] = line.substr(commaIndex1 + commaIndex2 + 2, commaIndex3);
+			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3);
 		}
 		j++;
 	}
 	readDineIn.close();
 
-	outDineIn.open("confirmDine.csv", ios::out);
-	outTakeAway.open("confirmtakeAway.csv", ios::out);
-	cout << "Confirm Order Option List" << endl;
-	cout << "1. Dine In" << endl;
-	cout << "2. Take Away" << endl;
-	cout << "Enter the Option: ";
+	outDineIn.open("confirmDine.csv", ios::app);
+	outTakeAway.open("confirmtakeAway.csv", ios::app);
+
+	cout << "\n\n\t\t\t\t\t CONFIRM ORDER OPTION LIST" << endl;
+	SetConsoleTextAttribute(a, 3);
+	cout << "\n\t\t\t\t ---------------------------------------------------- \n\n\n";
+	SetConsoleTextAttribute(a, 15);
+
+	cout << "\t\t\t\t 1. Dine In" << endl;
+	cout << "\n\t\t\t\t 2. Take Away" << endl;
+
+	SetConsoleTextAttribute(a, 14);
+	cout << "\n\n\t\t\tEnter the Option: ";
+	SetConsoleTextAttribute(a, 15);
 	cin >> optionChoice;
+
+	system("CLS");
 
 	switch (optionChoice)
 	{
 	case 1:
-		cin.ignore();
-		cout << endl;
-
-		for (int a = 0; a < j - 1; a++)
+		do
 		{
-			if (tableNo[a] != "")
-			{
-				cout << "Table No: " << tableNo[a] << endl;
-			}
-		}
-		cout << "Enter the Table No: ";
-		getline(cin, tempTableNo);
-		cout << endl;
+			system("CLS");
 
-		for (int a = 0; a < j - 1; a++)
-		{
-			if (tableNo[a] == tempTableNo)
-			{
-				confirmDineIn = true;
-				outDineIn << tableNo[a];
-				for (int p = 0; p < z; p++)
-				{
-					if (stoi(orderID[a]) == productID[p])
-					{
-						outDineIn << "," << orderID[a];
-					}
-				}
-				outDineIn << "," << orderQty[a] << endl;
+			cin.ignore();
+			cout << endl;
 
-				cout << "confirm order successfully!" << endl
-					 << endl;
+			cout << "\n\n\t\t\t\t\t\t TABLE NO" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
 
-				// queue
-				fstream queueFile;
-				queueFile.open("queue.txt", ios::in);
-				int queueNum;
-				string newQueue;
-				queueFile >> queueNum;
-				if (queueFile)
-				{
-					while (!queueFile.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
-					{
-						queueFile >> queueNum;
-						newQueue.append(" ");
-						newQueue.append(to_string(queueNum));
-					}
-					queueFile.close();
-				}
-
-				fstream queueFile2;
-				queueFile2.open("queue.txt", ios::out);
-				if (queueFile2)
-				{
-					queueFile2 << newQueue;
-					queueFile2.close();
-				}
-			}
-		}
-
-		if (confirmDineIn)
-		{
-			resetDineIn.open("Dine.csv", ios::out);
 			for (int b = 0; b < j - 1; b++)
 			{
-				if (tableNo[b] != tempTableNo)
+				int c;
+				for (c = 0; c < b; c++)
+					if (tableNo[b] == tableNo[c])
+						break;
+				if (b == c)
 				{
-					if (b == 0)
+					if (tableNo[b] != "")
 					{
-						resetDineIn << "tableno"
-									<< ","
-									<< "order"
-									<< ","
-									<< "quantity" << endl;
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Table Number: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << tableNo[b] << endl
+							 << endl;
 					}
-					resetDineIn << tableNo[b] << "," << orderID[b] << "," << orderQty[b] << endl;
 				}
 			}
-			resetDineIn.close();
-		}
 
+			cout << "\n\n\t\t\t\tEnter table number: ";
+			getline(cin, tempTableNo);
+			cout << endl;
+
+			for (int b = 0; b < j - 1; b++)
+			{
+				if (tableNo[b] == tempTableNo)
+				{
+					found = true;
+					confirmDineIn = true;
+
+					outDineIn << tableNo[b];
+
+					for (int p = 0; p < z; p++)
+					{
+						if (stoi(orderID[b]) == productID[p])
+						{
+							outDineIn << "," << orderID[b];
+						}
+
+						status[b] = "";
+					}
+
+					outDineIn << "," << orderQty[b] << endl;
+
+					SetConsoleTextAttribute(a, 6);
+					cout << "\n\n \t\t\t confirm order successfully!" << endl
+						 << endl;
+					SetConsoleTextAttribute(a, 15);
+
+					// queue
+					fstream queueFile;
+					queueFile.open("queue.txt", ios::in);
+					int queueNum;
+					string newQueue;
+					queueFile >> queueNum;
+					if (queueFile)
+					{
+						while (!queueFile.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+						{
+							queueFile >> queueNum;
+							newQueue.append(" ");
+							newQueue.append(to_string(queueNum));
+						}
+						queueFile.close();
+					}
+
+					fstream queueFile2;
+					queueFile2.open("queue.txt", ios::out);
+					if (queueFile2)
+					{
+						queueFile2 << newQueue;
+						queueFile2.close();
+					}
+				}
+			}
+
+			if (found = true)
+			{
+				if (confirmDineIn)
+				{
+					resetDineIn.open("Dine.csv", ios::out);
+					for (int b = 0; b < j - 1; b++)
+					{
+						if (tableNo[b] != tempTableNo)
+						{
+							if (b == 0)
+							{
+								resetDineIn << "tableno"
+											<< ","
+											<< "order"
+											<< ","
+											<< "quantity"
+											<< ","
+											<< "status"
+											<< endl;
+							}
+							resetDineIn << tableNo[b] << "," << orderID[b] << "," << orderQty[b] << "," << status[b] << endl;
+						}
+					}
+					for (int b = 0; b < j - 1; b++)
+					{
+						if (tableNo[b] == tempTableNo)
+						{
+							if (b == 0)
+							{
+								resetDineIn << "tableno"
+											<< ","
+											<< "order"
+											<< ","
+											<< "quantity"
+											<< ","
+											<< "status"
+											<< endl;
+							}
+							status[b] = "CONFIRMED";
+							resetDineIn << tableNo[b] << "," << orderID[b] << "," << orderQty[b] << "," << status[b] << endl;
+						}
+					}
+					resetDineIn.close();
+				}
+				else
+				{
+					SetConsoleTextAttribute(a, 12);
+					cout << "\n\n\t\t\t\t\t DATA NOT FOUND, TRY AGAIN! \n\n";
+					SetConsoleTextAttribute(a, 15);
+				}
+
+				cout << "\n\n\t\t\t\t Return to Admin Menu: ";
+				cin >> ans;
+
+				tolower(ans);
+			}
+		} while (ans != 'y');
 		break;
+
 	case 2:
-		cin.ignore();
-		cout << endl;
-
-		for (int a = 0; a < i - 1; a++)
+		do
 		{
-			if (userName[a] != "")
-			{
-				cout << "User Name: " << userName[a] << endl;
-			}
-		}
-		cout << "Enter the User Name: ";
-		getline(cin, tempUserName);
-		cout << endl;
+			cin.ignore();
+			cout << endl;
 
-		for (int a = 0; a < i - 1; a++)
-		{
-			if (userName[a] == tempUserName)
+			cout << "\n\n\t\t\t\t\t\t CUSTOMER NAME" << endl;
+			SetConsoleTextAttribute(a, 3);
+			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
+			SetConsoleTextAttribute(a, 15);
+
+			for (int b = 0; b < i - 2; b++)
 			{
-				confirmTakeAway = true;
-				outTakeAway << userName[a] << "," << userPhone[a];
-				for (int p = 0; p < z; p++)
+				int c;
+				for (c = 0; c < b; c++)
+					if (userName[b] == userName[c])
+						break;
+				if (b == c)
 				{
-					if (stoi(foodID[a]) == productID[p])
+					if (userName[b] != "")
 					{
-						outTakeAway << "," << foodID[a];
+						SetConsoleTextAttribute(a, 14);
+						cout << "\t\t\t\t\t Customer: ";
+						SetConsoleTextAttribute(a, 15);
+						cout << userName[b] << endl
+							 << endl;
 					}
 				}
-
-				outTakeAway << "," << foodQty[a] << endl;
-
-				cout << endl;
-
-				// queue
-				fstream queueFile3;
-
-				queueFile3.open("queue.txt", ios::in);
-
-				int queueNum;
-				string newQueue;
-
-				queueFile3 >> queueNum;
-				if (queueFile3)
-				{
-					while (!queueFile3.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
-					{
-						queueFile3 >> queueNum;
-						newQueue.append(" ");
-						newQueue.append(to_string(queueNum));
-					}
-					queueFile3.close();
-				}
-
-				fstream queueFile4;
-				queueFile4.open("queue.txt", ios::out);
-				if (queueFile4)
-				{
-					queueFile4 << newQueue;
-					queueFile4.close();
-				}
 			}
-		}
 
-		if (confirmTakeAway)
-		{
-			resetTakeAway.open("takeAway.csv", ios::out);
+			cout << "\t\t\tEnter Customer Name: ";
+			getline(cin, tempUserName);
+			cout << endl;
+
+			system("CLS");
+
 			for (int b = 0; b < i - 1; b++)
 			{
-				if (userName[b] != tempUserName)
+				if (userName[b] == tempUserName)
 				{
-					if (b == 0)
+					confirmTakeAway = true;
+					outTakeAway << userName[b] << "," << userPhone[b];
+					for (int p = 0; p < z; p++)
 					{
-						resetTakeAway << "name"
-									  << ","
-									  << "phone"
-									  << ","
-									  << "food"
-									  << ","
-									  << "quantity" << endl;
+						if (stoi(foodID[b]) == productID[p])
+						{
+							outTakeAway << "," << foodID[b];
+						}
+
+						status[b] = "";
 					}
-					resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << endl;
+
+					outTakeAway << "," << foodQty[b] << endl;
+
+					SetConsoleTextAttribute(a, 6);
+					cout << "\n\n \t\t\t confirm order successfully!" << endl
+						 << endl;
+					SetConsoleTextAttribute(a, 15);
+
+					cout << endl;
+
+					// queue
+					fstream queueFile3;
+
+					queueFile3.open("queue.txt", ios::in);
+
+					int queueNum;
+					string newQueue;
+
+					queueFile3 >> queueNum;
+					if (queueFile3)
+					{
+						while (!queueFile3.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+						{
+							queueFile3 >> queueNum;
+							newQueue.append(" ");
+							newQueue.append(to_string(queueNum));
+						}
+						queueFile3.close();
+					}
+
+					fstream queueFile4;
+					queueFile4.open("queue.txt", ios::out);
+					if (queueFile4)
+					{
+						queueFile4 << newQueue;
+						queueFile4.close();
+					}
 				}
 			}
-			resetTakeAway.close();
-		}
+
+			if (confirmTakeAway)
+			{
+				resetTakeAway.open("takeAway.csv", ios::out);
+				for (int b = 0; b < i - 1; b++)
+				{
+					if (userName[b] != tempUserName)
+					{
+						if (b == 0)
+						{
+							resetTakeAway << "name"
+										  << ","
+										  << "phone"
+										  << ","
+										  << "food"
+										  << ","
+										  << "quantity"
+										  << ","
+										  << "status"
+										  << endl;
+						}
+						status[b] = "PENDING";
+						resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
+					}
+					if (userName[b] == tempUserName)
+					{
+						if (b == 0)
+						{
+							resetTakeAway << "name"
+										  << ","
+										  << "phone"
+										  << ","
+										  << "food"
+										  << ","
+										  << "quantity"
+										  << ","
+										  << "status"
+										  << endl;
+						}
+						status[b] = "CONFRIMED";
+						resetTakeAway << userName[b] << "," << userPhone[b] << "," << foodID[b] << "," << foodQty[b] << "," << status[b] << endl;
+					}
+				}
+				resetTakeAway.close();
+
+				cout << "\n\n\t\t\t\t Return to Admin Menu: ";
+				cin >> ans;
+
+				tolower(ans);
+			}
+		} while (ans != 'y');
 
 		break;
 	default:
+		system("CLS");
 		cout << "Invalid Input! Only 1 or 2 is allowed!" << endl
 			 << endl;
 		break;

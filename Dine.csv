@@ -1,8 +1,2 @@
-tableno,order,quantity
-,,
-5,5,5
-1,1,1,PENDING
-,,
-8,2,2,PENDING
-8,4,4,PENDING
-8,3,3,PENDING
+tableno,order,quantity,status
+,,,

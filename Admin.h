@@ -13,14 +13,24 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 using namespace std;
+HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 
 class Admin
 {
 public:
+
+	// functions
 	void adminAuthentication();
 	int adminMenu();
+
+	// check order
 	void adminCheck();
-	void adminConfirm();
+	void checkDine();
+
+	// confirm order
+	void adminConfirm();;
+
+	// login authentication
 	int attempt(int times);
 };
 

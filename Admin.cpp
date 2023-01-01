@@ -110,7 +110,8 @@ int Admin::adminMenu()
 		cout << "\t\t\t\t 1. Check All Order" << endl;
 		cout << "\n\t\t\t\t 2. Confirm Order" << endl;
 		cout << "\n\t\t\t\t 3. Check All Confirmed Order" << endl;
-		cout << "\n\t\t\t\t 4. Return to Main Menu" << endl;
+		cout << "\n\t\t\t\t 4. Modify Menu" << endl;
+		cout << "\n\t\t\t\t 5. Return to Main Menu" << endl;
 		cout << "\n\n \t\t Enter the Option: ";
 		cin >> optionChoice;
 
@@ -129,6 +130,10 @@ int Admin::adminMenu()
 			checkConfirmed();
 			break;
 		case 4:
+			cout << endl;
+			modify_food();
+			break;
+		case 5:
 			cout << endl;
 			return mainPage();
 			break;
@@ -1096,6 +1101,219 @@ void Admin::checkConfirmed()
 		break;
 	default:
 		cout << "Invalid Input! Only 1 and 2 is allowed!" << endl;
+		break;
+	}
+}
+void Function::print_food()
+{
+
+	Food_Detail *food_temp = food_Head;
+	cout << "|-------------Menu List------------------|\n\n";
+	if (food_Head == NULL)
+	{
+		cout << "\n\nEmpty List\n\n";
+		return;
+	}
+
+	while (food_temp != NULL)
+	{
+		cout << "Food Name           : " << food_temp->food_name << "\n";
+		cout << "Food Description    : " << food_temp->food_desc << "\n";
+		cout << "Food Price         : " << food_temp->food_price << "\n";
+		food_temp = food_temp->food_next;
+	}
+	cout << "\n\n";
+}
+
+void Function::insert_food(Food_Detail food)
+{
+	if (!(food.food_name.empty()))
+	{
+		Food_Detail *new_food = new Food_Detail(food.food_name, food.food_desc, food.food_price);
+
+		if (food_Head == NULL)
+		{
+			food_Head = new_food;
+			return;
+		}
+
+		Food_Detail *temp = food_Head;
+
+		while (temp->food_next != NULL)
+		{
+			temp = temp->food_next;
+		}
+		temp->food_next = new_food;
+	}
+};
+
+void Function::delete_food(string food_name)
+{
+
+	Food_Detail *temp = food_Head;
+	Food_Detail *prev = NULL;
+
+	if (temp != NULL && temp->food_name == food_name)
+	{
+		food_Head = temp->food_next;
+		delete temp;
+		return;
+	}
+	else
+	{
+		while (temp != NULL && temp->food_name != food_name)
+		{
+			prev = temp;
+			temp = temp->food_next;
+		}
+		if (temp == NULL)
+		{
+			return;
+		}
+		else
+		{
+			prev->food_next = temp->food_next;
+			delete temp;
+		}
+	}
+};
+
+void Function::update()
+{
+
+	Food_Detail *food_temp = food_Head;
+
+	ofstream Food_temp("Food_temp.txt");
+
+	while (food_temp != NULL)
+	{
+		Food_temp << food_temp->food_name << endl;
+		Food_temp << food_temp->food_desc << endl;
+		Food_temp << food_temp->food_price << endl;
+		food_temp = food_temp->food_next;
+	}
+	Food_temp.close();
+	remove("menu.txt");
+	rename("Food_temp.txt", "foods.txt");
+}
+
+void Function::modify_food(Function function)
+{
+
+	Food_Detail food;
+	int user_input = 0;
+	bool found = false;
+
+	cout << "1. Add New Food\n\n";
+	cout << "2. Delete Food\n\n";
+	cout << "3. Save Food\n\n";
+	cout << "4. View Food\n\n";
+
+	do
+	{
+		cout << "Enter your choice : ==> ";
+		cin >> user_input;
+
+		if (cin.fail() || user_input < 1 || user_input > 4)
+		{
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+			cout << "Error Input....Please Try Again...\n";
+			found = true;
+		}
+		else
+		{
+			found = false;
+		}
+	} while (found);
+
+	switch (user_input)
+	{
+	case 1:
+		cin.ignore();
+
+		do
+		{
+			cout << "\n\nEnter Food Name : ";
+			getline(cin, food.food_name);
+
+			if (food.food_name.find_first_not_of(' '))
+			{
+				cout << "No empty food allow....\n";
+				cin.ignore();
+			}
+		} while (food.food_name.find_first_not_of(' '));
+
+		cout << "\n\n--------------------------\n\n";
+
+		do
+		{
+			cout << "Enter Food Description : ";
+			getline(cin, food.food_desc);
+
+			if (food.food_desc.find_first_not_of(' '))
+			{
+				cout << "No empty Description allow....\n";
+				cin.ignore();
+			}
+		} while (food.food_desc.find_first_not_of(' '));
+
+		cout << "\n\n--------------------------\n\n";
+
+		do
+		{
+			cout << "Enter Food Price : ";
+			getline(cin, food.food_price);
+
+			if (food.food_price.find_first_not_of(' '))
+			{
+				cout << "No empty price allow....\n";
+				cin.ignore();
+			}
+		} while (food.food_price.find_first_not_of(' '));
+
+		function.insert_food(food);
+		break;
+
+	case 2:
+		cin.ignore();
+
+		do
+		{
+			cout << "\n\nEnter food Name : ";
+			getline(cin, food.food_name);
+
+			if (food.food_name.find_first_not_of(' '))
+			{
+				cout << "No empty food allow....\n";
+			}
+		} while (food.food_name.find_first_not_of(' '));
+
+		// found = function.search_Book(food.food_name);
+
+		if (found)
+		{
+			function.delete_food(food.food_name);
+			cout << "\n\nDelete Success...\n";
+		}
+		else
+		{
+			cout << "\n\n Food Not found...\n\n";
+		}
+
+		break;
+
+	case 3:
+		cout << "\n\n Save \n\n";
+		function.update();
+		break;
+
+	case 4:
+		function.print_food();
+		break;
+
+	default:
+		cout << "\n\nError Input...\n\n";
 		break;
 	}
 }

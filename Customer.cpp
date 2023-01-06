@@ -80,177 +80,175 @@ void Customer::countdown()
 void Customer::order() /* FUNCTION TO PLACE ORDER FROM CUSTOMER */
 {
 displaymenu:
-
-    bool full = false;
-    int queueNum;
-    int counter = 0;
-    bool emptyQueue = file.peek() == std::ifstream::traits_type::eof();
-    string newQueue;
-
     // QUEUE
     file.open("queue.txt", ios::in);
+        bool full = false;
+        int queueNum;
+        int counter = 0;
+        bool emptyQueue = file.peek() == std::ifstream::traits_type::eof();
+        string newQueue;
 
-    if (file)
-    {
-        if (!emptyQueue)
-        {
-            while (!file.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
-            {
-                file >> queueNum;
-                if (counter != 0)
-                {
-                    newQueue.append(" ");
-                }
-                newQueue.append(to_string(queueNum));
-                counter++;
-            }
-
-            if (counter >= 30)
-            { /*MAX CUSTOMER 30*/
-                full_queue();
-                full = true;
-            }
-            else
-            {
-                if (queueNum >= 30)
-                {
-                    queueNum = 0;
-                }
-            }
-        }
-        else
-        {
-            queueNum = 0;
-        }
-        file.close();
-    }
-
-    // if the queue is not full
-    if (!full)
-    {
-
-        file.open("menu.txt", ios::in); /* DISPLAY MENU TO CUSTOMER */
         if (file)
         {
-            file.close();
-            menu();
-
-            ofstream filedorder; /* STORE ORDER FROM CUSTOMER INTO Dine.csv*/
-            filedorder.open("Dine.csv", ios::app);
-
-            ofstream filetorder; /* STORE ORDER FROM CUSTOMER INTO takeAway.csv*/
-            filetorder.open("takeAway.csv", ios::app);
-
-            cout << endl;
-            SetConsoleTextAttribute(h, 7); /* DINE IN / TAKE AWAY */
-            cout << "\t\t --------------------------------------------------------------------------------\n";
-            cout << "\t\t <1> Dine in\n";
-            cout << "\t\t <2> Take away\n";
-            cout << "\n\t\t >> Dine in / Take away (1/2): ";
-            cin >> cust_type;
-            if (cust_type == 1)
-            { /* DINE IN, THEN KEY IN TABLE NO. */
-                SetConsoleTextAttribute(h, 15);
-                cout << "\n\t\t================================================================================" << endl;
-                cout << "\t\t\t\t\t\tPLACE YOUR ORDER" << endl;
-                cout << "\t\t================================================================================" << endl;
-
-            again:
-                SetConsoleTextAttribute(h, 7);
-                cout << "\n\t\t >> Please enter your table no.: ";
-                cin >> table_no;
-
-                if (table_no >= 1 && table_no <= 30)
+            if (!emptyQueue)
+            {
+                while (!file.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
                 {
-                    // do nothing
+                    file >> queueNum;
+                    if (counter != 0)
+                    {
+                        newQueue.append(" ");
+                    }
+                    newQueue.append(to_string(queueNum));
+                    counter++;
+                }
+
+                if (counter >= 30)
+                { /*MAX CUSTOMER 30*/
+                    full_queue();
+                    full = true;
                 }
                 else
                 {
-                    SetConsoleTextAttribute(h, 4);
-                    cout << "\n\t\t\t\t   Please enter a valid table no. (1 - 30)\n";
-                    cout << "\t\t\t\t\t Please enter number input.\n";
-                    goto again;
+                    if (queueNum >= 30)
+                    {
+                        queueNum = 0;
+                    }
                 }
-            }
-            else if (cust_type == 2)
-            { /* TAKE AWAY, THEN KEY IN NAME AND PHONE NO. */
-                SetConsoleTextAttribute(h, 15);
-                cout << "\n\t\t================================================================================" << endl;
-                cout << "\t\t\t\t\t\tPLACE YOUR ORDER" << endl;
-                cout << "\t\t================================================================================" << endl;
-                SetConsoleTextAttribute(h, 7);
-                cout << "\n\t\t >> Please enter your name : ";
-                cin >> cust_name;
-                cout << "\t\t >> Please enter your phone number : ";
-                cin >> cust_phone;
             }
             else
             {
-                goto displaymenu; /* IF INPUT IS NOT 1/2, THEN GO BACK AGAIN */
+                queueNum = 0;
             }
+            file.close();
+        }
 
-            do /* GET PRODUCT NO AND QUANTITY FROM CUSTOMER */
+        // if the queue is not full
+        if (!full)
+        {
+
+            file.open("menu.txt", ios::in); /* DISPLAY MENU TO CUSTOMER */
+            if (file)
             {
-            restart:
-                SetConsoleTextAttribute(h, 7);
-                cout << "\n\t\t >> Enter the product no.: ";
-                cin >> order_arr[c];
+                file.close();
+                menu();
 
-                if (order_arr[c] >= 1 && order_arr[c] <= 15)
-                { /* IF PRODUCT NO. IS VALID, THEN ASK FOR QUANTITY */
-                quantity:
+                ofstream filedorder; /* STORE ORDER FROM CUSTOMER INTO Dine.csv*/
+                filedorder.open("Dine.csv", ios::app);
+
+                ofstream filetorder; /* STORE ORDER FROM CUSTOMER INTO takeAway.csv*/
+                filetorder.open("takeAway.csv", ios::app);
+
+                cout << endl;
+                SetConsoleTextAttribute(h, 7); /* DINE IN / TAKE AWAY */
+                cout << "\t\t --------------------------------------------------------------------------------\n";
+                cout << "\t\t <1> Dine in\n";
+                cout << "\t\t <2> Take away\n";
+                cout << "\n\t\t >> Dine in / Take away (1/2): ";
+                cin >> cust_type;
+                if (cust_type == 1)
+                { /* DINE IN, THEN KEY IN TABLE NO. */
+                    SetConsoleTextAttribute(h, 15);
+                    cout << "\n\t\t================================================================================" << endl;
+                    cout << "\t\t\t\t\t\tPLACE YOUR ORDER" << endl;
+                    cout << "\t\t================================================================================" << endl;
+
+                again:
                     SetConsoleTextAttribute(h, 7);
-                    cout << "\n\t\t >> Quantity in number : ";
-                    cin >> quan[c];
+                    cout << "\n\t\t >> Please enter your table no.: ";
+                    cin >> table_no;
 
-                    if (quan[c] >= 1 && quan[c] <= 10)
+                    if (table_no >= 1 && table_no <= 30)
                     {
-                        c++;
+                        // do nothing
                     }
                     else
-                    { /* QUANTITY BELOW/EXCEED RANGE */
+                    {
                         SetConsoleTextAttribute(h, 4);
-                        cout << "\n\t\t\t\t   Sorry. Minimum order is 1. Maximum order is 10.\n";
-                        goto quantity;
+                        cout << "\n\t\t\t\t   Please enter a valid table no. (1 - 30)\n";
+                        cout << "\t\t\t\t\t Please enter number input.\n";
+                        goto again;
                     }
                 }
+                else if (cust_type == 2)
+                { /* TAKE AWAY, THEN KEY IN NAME AND PHONE NO. */
+                    SetConsoleTextAttribute(h, 15);
+                    cout << "\n\t\t================================================================================" << endl;
+                    cout << "\t\t\t\t\t\tPLACE YOUR ORDER" << endl;
+                    cout << "\t\t================================================================================" << endl;
+                    SetConsoleTextAttribute(h, 7);
+                    cout << "\n\t\t >> Please enter your name : ";
+                    cin >> cust_name;
+                    cout << "\t\t >> Please enter your phone number : ";
+                    cin >> cust_phone;
+                }
                 else
-                { /* PRODUCT NO. NOT VALID */
-                    SetConsoleTextAttribute(h, 4);
-                    cout << "\n\t\t\t\t   Please enter a valid product no. (1 - 15)\n";
-                    goto restart;
-                }
-
-                cout << "\n\t\t--------------------------------------------------------------------------------";
-                cout << "\n\t\t >> Do you want to order another product [y/n] : ";
-                cin >> addp;
-                cout << "\t\t--------------------------------------------------------------------------------" << endl;
-
-            } while ((addp == 'y' || addp == 'Y') && (c < 15));
-
-            // queue
-            fstream queueFile;
-            queueFile.open("queue.txt", ios::out);
-            bool full = false;
-            if (queueFile)
-            {
-                queueNum++;
-                if (counter != 0)
                 {
-                    newQueue.append(" ");
+                    goto displaymenu; /* IF INPUT IS NOT 1/2, THEN GO BACK AGAIN */
                 }
-                newQueue.append(to_string(queueNum));
-                queueFile << newQueue; // inserting text
 
-                queueFile.close();
+                do /* GET PRODUCT NO AND QUANTITY FROM CUSTOMER */
+                {
+                restart:
+                    SetConsoleTextAttribute(h, 7);
+                    cout << "\n\t\t >> Enter the product no.: ";
+                    cin >> order_arr[c];
+
+                    if (order_arr[c] >= 1 && order_arr[c] <= 15)
+                    { /* IF PRODUCT NO. IS VALID, THEN ASK FOR QUANTITY */
+                    quantity:
+                        SetConsoleTextAttribute(h, 7);
+                        cout << "\n\t\t >> Quantity in number : ";
+                        cin >> quan[c];
+
+                        if (quan[c] >= 1 && quan[c] <= 10)
+                        {
+                            c++;
+                        }
+                        else
+                        { /* QUANTITY BELOW/EXCEED RANGE */
+                            SetConsoleTextAttribute(h, 4);
+                            cout << "\n\t\t\t\t   Sorry. Minimum order is 1. Maximum order is 10.\n";
+                            goto quantity;
+                        }
+                    }
+                    else
+                    { /* PRODUCT NO. NOT VALID */
+                        SetConsoleTextAttribute(h, 4);
+                        cout << "\n\t\t\t\t   Please enter a valid product no. (1 - 15)\n";
+                        goto restart;
+                    }
+
+                    cout << "\n\t\t--------------------------------------------------------------------------------";
+                    cout << "\n\t\t >> Do you want to order another product [y/n] : ";
+                    cin >> addp;
+                    cout << "\t\t--------------------------------------------------------------------------------" << endl;
+
+                } while ((addp == 'y' || addp == 'Y') && (c < 15));
+
+                // queue
+                fstream queueFile;
+                queueFile.open("queue.txt", ios::out);
+                bool full = false;
+                if (queueFile)
+                {
+                    queueNum++;
+                    if (counter != 0)
+                    {
+                        newQueue.append(" ");
+                    }
+                    newQueue.append(to_string(queueNum));
+                    queueFile << newQueue; // inserting text
+
+                    queueFile.close();
+                }
+
+                system("cls");
+
+                show_order(); /* CALL SHOW ORDER FUNCTION WHEN CUSTOMER KEY IN 'N' */
             }
-
-            system("cls");
-
-            show_order(); /* CALL SHOW ORDER FUNCTION WHEN CUSTOMER KEY IN 'N' */
         }
     }
-}
 
 void Customer::add_order() /* FUNCTION FOR CUSTOMER TO ADD ORDER */
 {

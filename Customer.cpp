@@ -599,7 +599,7 @@ void Customer::full_queue()
 {
     SetConsoleTextAttribute(h, 6);
     cout << "\n\t\t\t\t      *****************************************";
-    cout << "\n\t\t\t\t      |         Sorry our queue is full!       |";
+    cout << "\n\t\t\t\t      |         Sorry our queue is full!      |";
     cout << "\n\t\t\t\t      |         Please try again later        |";
     cout << "\n\t\t\t\t      *****************************************\n\n";
 }

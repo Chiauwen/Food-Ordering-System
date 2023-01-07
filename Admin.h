@@ -18,6 +18,7 @@ HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 
 class Admin
 {
+
 public:
 	// functions
 	void adminAuthentication();
@@ -33,46 +34,26 @@ public:
 
 	// login authentication
 	int attempt(int times);
+
+	void a_menu();
+	
 };
 
-class Food_Detail
-{
-public:
-	string food_name;
-	string food_desc;
-	string food_price;
-	Food_Detail *food_next;
+class Node {
+Node *food_head = NULL;
+ofstream file;
+    public:
+        int pno;
+        string name;
+        float price;
+        Node *food_next;
 
-	Food_Detail()
-	{
-		food_name;
-		food_desc;
-		food_price;
-		food_next = NULL;
-	}
-
-	Food_Detail(string food_name, string food_desc, string food_price)
-	{
-		this->food_name = food_name;
-		this->food_desc = food_desc;
-		this->food_price = food_price;
-		this->food_next = NULL;
-	}
+	void add_menu();
+	void display_menu();
+	void modify_menu();
+	void delete_menu();
 };
 
-class Function
-{
-public:
-	Food_Detail *food_Head;
-	Function()
-	{
-		food_Head = NULL;
-	};
-	void print_food();
-	void insert_food(Food_Detail food);
-	void delete_food(string food_name);
-	void update();
-	void modify_food(Function function);
-};
+
 
 #endif

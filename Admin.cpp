@@ -131,7 +131,7 @@ int Admin::adminMenu()
 			break;
 		case 4:
 			cout << endl;
-			modify_food();
+			a_menu();
 			break;
 		case 5:
 			cout << endl;
@@ -1104,216 +1104,184 @@ void Admin::checkConfirmed()
 		break;
 	}
 }
-void Function::print_food()
-{
 
-	Food_Detail *food_temp = food_Head;
-	cout << "|-------------Menu List------------------|\n\n";
-	if (food_Head == NULL)
-	{
-		cout << "\n\nEmpty List\n\n";
-		return;
-	}
+void Node ::add_menu() {
 
-	while (food_temp != NULL)
-	{
-		cout << "Food Name           : " << food_temp->food_name << "\n";
-		cout << "Food Description    : " << food_temp->food_desc << "\n";
-		cout << "Food Price         : " << food_temp->food_price << "\n";
-		food_temp = food_temp->food_next;
-	}
-	cout << "\n\n";
+    Node *temp = new Node();
+
+    cout << "Enter number: ";
+    cin >> temp->pno;
+
+    cout << "Enter name: ";
+    cin.ignore();
+    getline(cin, temp->name);
+
+    cout << "Enter price: ";
+    cin >> temp->price;
+
+    temp->food_next = NULL;
+
+    if (food_head == NULL) {
+        food_head = temp;
+        return;
+    }
+
+    Node *last = food_head;
+    while (last->food_next != NULL) {
+        last = last->food_next;
+    }
+
+    last->food_next = temp;
+
+    cout << endl;
 }
 
-void Function::insert_food(Food_Detail food)
-{
-	if (!(food.food_name.empty()))
-	{
-		Food_Detail *new_food = new Food_Detail(food.food_name, food.food_desc, food.food_price);
 
-		if (food_Head == NULL)
-		{
-			food_Head = new_food;
-			return;
-		}
+void Node :: display_menu() {
+    Node *temp = food_head;
+    file.open("menu.txt", ofstream::out);
 
-		Food_Detail *temp = food_Head;
+    cout << left << setw(20) << "PNo" 
+         << left << setw(25) << "Food Name" 
+         << left << setw(20) << "Price"  << endl;
+    cout << "-----------------------------------------------------------------------------" << endl;
 
-		while (temp->food_next != NULL)
-		{
-			temp = temp->food_next;
-		}
-		temp->food_next = new_food;
-	}
-};
+    while (temp != NULL) {
+        // Display node data
+        cout << left << setw(20) << temp->pno 
+             << left << setw(25) << temp->name 
+             << left << setw(20) << temp->price <<endl;
 
-void Function::delete_food(string food_name)
-{
+        file << temp->pno <<  " " << temp->name << " " << temp->price << endl;
+        file << endl;
 
-	Food_Detail *temp = food_Head;
-	Food_Detail *prev = NULL;
-
-	if (temp != NULL && temp->food_name == food_name)
-	{
-		food_Head = temp->food_next;
-		delete temp;
-		return;
-	}
-	else
-	{
-		while (temp != NULL && temp->food_name != food_name)
-		{
-			prev = temp;
-			temp = temp->food_next;
-		}
-		if (temp == NULL)
-		{
-			return;
-		}
-		else
-		{
-			prev->food_next = temp->food_next;
-			delete temp;
-		}
-	}
-};
-
-void Function::update()
-{
-
-	Food_Detail *food_temp = food_Head;
-
-	ofstream Food_temp("Food_temp.txt");
-
-	while (food_temp != NULL)
-	{
-		Food_temp << food_temp->food_name << endl;
-		Food_temp << food_temp->food_desc << endl;
-		Food_temp << food_temp->food_price << endl;
-		food_temp = food_temp->food_next;
-	}
-	Food_temp.close();
-	remove("menu.txt");
-	rename("Food_temp.txt", "foods.txt");
+        temp = temp->food_next;
+    }
+    file.close();
 }
 
-void Function::modify_food(Function function)
+
+void Node :: modify_menu() {
+    int number, ch;
+    Node *temp = food_head;
+
+    cout << "Enter Number: ";
+    cin >> number;
+
+    cout << endl;
+    while (temp != NULL) {
+        if ((temp->pno) == number) {
+            cout << "What do you want to modify?\n";
+            cout << "1. Food Name\n";
+            cout << "2. Food Price\n";
+            cout << "Enter an option (1 or 2): ";
+            cin >> ch;
+
+            cin.ignore();
+
+            switch(ch) {
+                case 1:
+                    cout << "Enter New Name: ";
+                    getline(cin, temp->name);
+                    break;
+
+                case 2:
+                    cout << "Enter New Price: ";
+                    cin >> temp->price;
+                    break;
+
+                default: 
+					cout << "\nWrong Option!!!\n"; 
+					break;
+            }
+            
+            return;
+        }
+        temp = temp->food_next;
+    }
+    cout << " Not Found !!!";
+}
+
+void Node ::delete_menu() {
+    int number;
+    Node *temp = food_head;
+
+    cout << "Enter Number want to delete: ";
+    cin >> number;
+
+    int position = 0;
+    int found = 0;
+
+    // Get position of node to delete
+    while (temp != NULL) {
+        position++;
+        if ((temp->pno) == number) {
+            found = 1;
+            break;
+        }
+        temp = temp->food_next;
+    }
+
+    if(found == 0) {
+        cout << "No existing number";
+    } else {
+        
+        Node *temp1 = food_head;
+
+        if (position == 1) {
+            food_head = temp1->food_next;
+            free(temp1);
+            return;
+        }
+
+        for (int i = 2; temp1 != NULL && i < position - 1; i++) {
+            temp1 = temp1->food_next;
+        }
+
+        if (temp1 == NULL || temp1->food_next == NULL) {
+            return;
+        }
+
+        Node *next = temp1->food_next->food_next;
+        free(temp1->food_next);
+        temp1->food_next = next;
+
+        cout << "\nFood Deleted" << endl << endl;
+    }
+}
+
+void Admin::a_menu()
 {
-
-	Food_Detail food;
-	int user_input = 0;
-	bool found = false;
-
-	cout << "1. Add New Food\n\n";
-	cout << "2. Delete Food\n\n";
-	cout << "3. Save Food\n\n";
-	cout << "4. View Food\n\n";
-
-	do
-	{
-		cout << "Enter your choice : ==> ";
-		cin >> user_input;
-
-		if (cin.fail() || user_input < 1 || user_input > 4)
-		{
-			cin.clear();
-			cin.ignore(INT_MAX, '\n');
-			cout << "Error Input....Please Try Again...\n";
-			found = true;
-		}
-		else
-		{
-			found = false;
-		}
-	} while (found);
-
-	switch (user_input)
-	{
-	case 1:
-		cin.ignore();
-
-		do
-		{
-			cout << "\n\nEnter Food Name : ";
-			getline(cin, food.food_name);
-
-			if (food.food_name.find_first_not_of(' '))
-			{
-				cout << "No empty food allow....\n";
-				cin.ignore();
-			}
-		} while (food.food_name.find_first_not_of(' '));
-
-		cout << "\n\n--------------------------\n\n";
-
-		do
-		{
-			cout << "Enter Food Description : ";
-			getline(cin, food.food_desc);
-
-			if (food.food_desc.find_first_not_of(' '))
-			{
-				cout << "No empty Description allow....\n";
-				cin.ignore();
-			}
-		} while (food.food_desc.find_first_not_of(' '));
-
-		cout << "\n\n--------------------------\n\n";
-
-		do
-		{
-			cout << "Enter Food Price : ";
-			getline(cin, food.food_price);
-
-			if (food.food_price.find_first_not_of(' '))
-			{
-				cout << "No empty price allow....\n";
-				cin.ignore();
-			}
-		} while (food.food_price.find_first_not_of(' '));
-
-		function.insert_food(food);
-		break;
-
-	case 2:
-		cin.ignore();
-
-		do
-		{
-			cout << "\n\nEnter food Name : ";
-			getline(cin, food.food_name);
-
-			if (food.food_name.find_first_not_of(' '))
-			{
-				cout << "No empty food allow....\n";
-			}
-		} while (food.food_name.find_first_not_of(' '));
-
-		// found = function.search_Book(food.food_name);
-
-		if (found)
-		{
-			function.delete_food(food.food_name);
-			cout << "\n\nDelete Success...\n";
-		}
-		else
-		{
-			cout << "\n\n Food Not found...\n\n";
-		}
-
-		break;
-
-	case 3:
-		cout << "\n\n Save \n\n";
-		function.update();
-		break;
-
-	case 4:
-		function.print_food();
-		break;
-
-	default:
-		cout << "\n\nError Input...\n\n";
-		break;
-	}
+	int choice;
+	Node n;
+    do {
+        // Display menu
+        cout << "\n==============================================\n";
+        cout << right << setw(35) << " Food Menu\n";
+        cout << "==============================================\n";
+        cout << "\n\t<1> ADD FOOD";
+        cout << "\n\t<2> DISPLAY MENU";
+        cout << "\n\t<3> MODIFY MENU";
+        cout << "\n\t<4> DELETE MENU";
+        cout << "\n\t<5> to Exit";
+        cout << "\n\tEnter your choice: ";
+        cin >> choice;
+        cout << "\n";
+        switch (choice) {
+            case 1:
+                n.add_menu();
+                break;
+            case 2:
+                n.display_menu();
+                break;
+            case 3:
+                n.modify_menu();
+                break;
+            case 4:
+                n.delete_menu();
+                break;
+            case 5:
+                break;
+        }
+    } while (choice != 5);
 }

@@ -35,25 +35,12 @@ public:
 	// login authentication
 	int attempt(int times);
 
-	void a_menu();
+	// sort
+	int sort(string sortArr[], int j);
+	void printSortDine(string sortArr[], int j);
+	void printSortTake(string sortArr[], int j);
 	
 };
-
-class Node {
-Node *food_head = NULL;
-ofstream file;
-    public:
-        int pno;
-        string name;
-        float price;
-        Node *food_next;
-
-	void add_menu();
-	void display_menu();
-	void modify_menu();
-	void delete_menu();
-};
-
 
 
 #endif

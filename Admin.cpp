@@ -110,8 +110,7 @@ int Admin::adminMenu()
 		cout << "\t\t\t\t 1. Check All Order" << endl;
 		cout << "\n\t\t\t\t 2. Confirm Order" << endl;
 		cout << "\n\t\t\t\t 3. Check All Confirmed Order" << endl;
-		cout << "\n\t\t\t\t 4. Modify Menu" << endl;
-		cout << "\n\t\t\t\t 5. Return to Main Menu" << endl;
+		cout << "\n\t\t\t\t 4. Return to Main Menu" << endl;
 		cout << "\n\n \t\t Enter the Option: ";
 		cin >> optionChoice;
 
@@ -131,18 +130,61 @@ int Admin::adminMenu()
 			break;
 		case 4:
 			cout << endl;
-			a_menu();
-			break;
-		case 5:
-			cout << endl;
 			return mainPage();
 			break;
 		default:
-			cout << "Invalid Input! Only 1 or 2 is allowed!" << endl
+			cout << "Invalid Input! Only 1/2/3/4 is allowed!" << endl
 				 << endl;
 			break;
 		}
 	} while (!optionLoop);
+}
+
+int Admin::sort(string sortArr[], int j)
+{
+	// bubble sort
+	for (int i = 0; i < j - 1; i++)
+	{
+		for (int s = 0; s < j - 2; s++)
+		{
+			if (sortArr[s] > sortArr[s + 1])
+			{
+				string ch = sortArr[s];
+				sortArr[s] = sortArr[s + 1];
+				sortArr[s + 1] = ch;
+			}
+		}
+	}
+}
+
+void Admin::printSortDine(string sortArr[], int j)
+{
+	for (int i = 0; i < j - 1; i++)
+	{
+		if (sortArr[i] != "")
+		{
+			SetConsoleTextAttribute(a, 14);
+			cout << "\t\t\t\t\t Table Number: ";
+			SetConsoleTextAttribute(a, 15);
+			cout << sortArr[i] << endl
+				 << endl;
+		}
+	}
+}
+
+void Admin::printSortTake(string sortArr[], int j)
+{
+	for (int i = 0; i < j - 1; i++)
+	{
+		if (sortArr[i] != "")
+		{
+			SetConsoleTextAttribute(a, 14);
+			cout << "\t\t\t\t\t Customer Name: ";
+			SetConsoleTextAttribute(a, 15);
+			cout << sortArr[i] << endl
+				 << endl;
+		}
+	}
 }
 
 void Admin::adminCheck()
@@ -178,6 +220,11 @@ void Admin::adminCheck()
 	int productID[15];
 	float productPrice[15];
 	string productName[15];
+
+	// Store value for sorting
+	string table[30];
+	string customer[15];
+	int num;
 
 	// File Structure
 	ifstream readMenu;
@@ -270,6 +317,8 @@ void Admin::adminCheck()
 			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < j - 1; b++)
 			{
 				int c;
@@ -278,16 +327,16 @@ void Admin::adminCheck()
 						break;
 				if (b == c)
 				{
-					if (tableNo[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Table Number: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << tableNo[b] << endl
-							 << endl;
-					}
+					// copy the value from tableNo to table[]
+					table[num] = tableNo[b];
+
+					num++;
 				}
 			}
+
+			sort(table, j);
+
+			printSortDine(table, j);
 
 			cout << "\n\n\t\t\t\tEnter table number: ";
 			getline(cin, tempTableNo);
@@ -345,6 +394,8 @@ void Admin::adminCheck()
 			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < i - 2; b++)
 			{
 				int c;
@@ -353,16 +404,15 @@ void Admin::adminCheck()
 						break;
 				if (b == c)
 				{
-					if (userName[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Customer: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << userName[b] << endl
-							 << endl;
-					}
+					customer[num] = userName[b];
+
+					num++;
 				}
 			}
+
+			sort(customer, j);
+
+			printSortTake(customer, j);
 
 			cout << "\t\t\tEnter Customer Name: ";
 			getline(cin, tempUserName);
@@ -448,6 +498,11 @@ void Admin::adminConfirm()
 	int productID[15];
 	float productPrice[15];
 	string productName[15];
+
+	// Store value for sorting
+	string table[30];
+	string customer[15];
+	int num;
 
 	// File Structure
 	ifstream readMenu;
@@ -548,6 +603,8 @@ void Admin::adminConfirm()
 			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < j - 1; b++)
 			{
 				int c;
@@ -556,16 +613,16 @@ void Admin::adminConfirm()
 						break;
 				if (b == c)
 				{
-					if (tableNo[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Table Number: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << tableNo[b] << endl
-							 << endl;
-					}
+					// copy the value from tableNo to table[]
+					table[num] = tableNo[b];
+
+					num++;
 				}
 			}
+
+			sort(table, j);
+
+			printSortDine(table, j);
 
 			cout << "\n\n\t\t\t\tEnter table number: ";
 			getline(cin, tempTableNo);
@@ -688,6 +745,8 @@ void Admin::adminConfirm()
 			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < i - 2; b++)
 			{
 				int c;
@@ -696,16 +755,15 @@ void Admin::adminConfirm()
 						break;
 				if (b == c)
 				{
-					if (userName[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Customer: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << userName[b] << endl
-							 << endl;
-					}
+					customer[num] = userName[b];
+
+					num++;
 				}
 			}
+
+			sort(customer, j);
+
+			printSortTake(customer, j);
 
 			cout << "\t\t\tEnter Customer Name: ";
 			getline(cin, tempUserName);
@@ -875,6 +933,11 @@ void Admin::checkConfirmed()
 	float productPrice[15];
 	string productName[15];
 
+	// Store value for sorting
+	string table[30];
+	string customer[15];
+	int num;
+
 	// Find data
 	bool found = false;
 
@@ -964,6 +1027,8 @@ void Admin::checkConfirmed()
 			cout << "\n\t\t\t\t\t -------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < j - 1; b++)
 			{
 				int c;
@@ -972,16 +1037,16 @@ void Admin::checkConfirmed()
 						break;
 				if (b == c)
 				{
-					if (tableNo[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Table Number: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << tableNo[b] << endl
-							 << endl;
-					}
+					// copy the value from tableNo to table[]
+					table[num] = tableNo[b];
+
+					num++;
 				}
 			}
+
+			sort(table, j);
+
+			printSortDine(table, j);
 
 			cout << "\n\n\t\t\t\tEnter table number: ";
 			getline(cin, tempTableNo);
@@ -1037,6 +1102,8 @@ void Admin::checkConfirmed()
 			cout << "\n\t\t\t\t\t ----------------------------------- \n\n\n";
 			SetConsoleTextAttribute(a, 15);
 
+			num = 0;
+
 			for (int b = 0; b < i - 2; b++)
 			{
 				int c;
@@ -1045,16 +1112,15 @@ void Admin::checkConfirmed()
 						break;
 				if (b == c)
 				{
-					if (userName[b] != "")
-					{
-						SetConsoleTextAttribute(a, 14);
-						cout << "\t\t\t\t\t Customer: ";
-						SetConsoleTextAttribute(a, 15);
-						cout << userName[b] << endl
-							 << endl;
-					}
+					customer[num] = userName[b];
+
+					num++;
 				}
 			}
+
+			sort(customer, j);
+
+			printSortTake(customer, j);
 
 			cout << "\t\t\tEnter Customer Name: ";
 			getline(cin, tempUserName);
@@ -1103,185 +1169,4 @@ void Admin::checkConfirmed()
 		cout << "Invalid Input! Only 1 and 2 is allowed!" << endl;
 		break;
 	}
-}
-
-void Node ::add_menu() {
-
-    Node *temp = new Node();
-
-    cout << "Enter number: ";
-    cin >> temp->pno;
-
-    cout << "Enter name: ";
-    cin.ignore();
-    getline(cin, temp->name);
-
-    cout << "Enter price: ";
-    cin >> temp->price;
-
-    temp->food_next = NULL;
-
-    if (food_head == NULL) {
-        food_head = temp;
-        return;
-    }
-
-    Node *last = food_head;
-    while (last->food_next != NULL) {
-        last = last->food_next;
-    }
-
-    last->food_next = temp;
-
-    cout << endl;
-}
-
-
-void Node :: display_menu() {
-    Node *temp = food_head;
-    file.open("menu.txt", ofstream::out);
-
-    cout << left << setw(20) << "PNo" 
-         << left << setw(25) << "Food Name" 
-         << left << setw(20) << "Price"  << endl;
-    cout << "-----------------------------------------------------------------------------" << endl;
-
-    while (temp != NULL) {
-        // Display node data
-        cout << left << setw(20) << temp->pno 
-             << left << setw(25) << temp->name 
-             << left << setw(20) << temp->price <<endl;
-
-        file << temp->pno <<  " " << temp->name << " " << temp->price << endl;
-        file << endl;
-
-        temp = temp->food_next;
-    }
-    file.close();
-}
-
-
-void Node :: modify_menu() {
-    int number, ch;
-    Node *temp = food_head;
-
-    cout << "Enter Number: ";
-    cin >> number;
-
-    cout << endl;
-    while (temp != NULL) {
-        if ((temp->pno) == number) {
-            cout << "What do you want to modify?\n";
-            cout << "1. Food Name\n";
-            cout << "2. Food Price\n";
-            cout << "Enter an option (1 or 2): ";
-            cin >> ch;
-
-            cin.ignore();
-
-            switch(ch) {
-                case 1:
-                    cout << "Enter New Name: ";
-                    getline(cin, temp->name);
-                    break;
-
-                case 2:
-                    cout << "Enter New Price: ";
-                    cin >> temp->price;
-                    break;
-
-                default: 
-					cout << "\nWrong Option!!!\n"; 
-					break;
-            }
-            
-            return;
-        }
-        temp = temp->food_next;
-    }
-    cout << " Not Found !!!";
-}
-
-void Node ::delete_menu() {
-    int number;
-    Node *temp = food_head;
-
-    cout << "Enter Number want to delete: ";
-    cin >> number;
-
-    int position = 0;
-    int found = 0;
-
-    // Get position of node to delete
-    while (temp != NULL) {
-        position++;
-        if ((temp->pno) == number) {
-            found = 1;
-            break;
-        }
-        temp = temp->food_next;
-    }
-
-    if(found == 0) {
-        cout << "No existing number";
-    } else {
-        
-        Node *temp1 = food_head;
-
-        if (position == 1) {
-            food_head = temp1->food_next;
-            free(temp1);
-            return;
-        }
-
-        for (int i = 2; temp1 != NULL && i < position - 1; i++) {
-            temp1 = temp1->food_next;
-        }
-
-        if (temp1 == NULL || temp1->food_next == NULL) {
-            return;
-        }
-
-        Node *next = temp1->food_next->food_next;
-        free(temp1->food_next);
-        temp1->food_next = next;
-
-        cout << "\nFood Deleted" << endl << endl;
-    }
-}
-
-void Admin::a_menu()
-{
-	int choice;
-	Node n;
-    do {
-        // Display menu
-        cout << "\n==============================================\n";
-        cout << right << setw(35) << " Food Menu\n";
-        cout << "==============================================\n";
-        cout << "\n\t<1> ADD FOOD";
-        cout << "\n\t<2> DISPLAY MENU";
-        cout << "\n\t<3> MODIFY MENU";
-        cout << "\n\t<4> DELETE MENU";
-        cout << "\n\t<5> to Exit";
-        cout << "\n\tEnter your choice: ";
-        cin >> choice;
-        cout << "\n";
-        switch (choice) {
-            case 1:
-                n.add_menu();
-                break;
-            case 2:
-                n.display_menu();
-                break;
-            case 3:
-                n.modify_menu();
-                break;
-            case 4:
-                n.delete_menu();
-                break;
-            case 5:
-                break;
-        }
-    } while (choice != 5);
 }

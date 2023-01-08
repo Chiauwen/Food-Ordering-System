@@ -192,7 +192,7 @@ void Admin::adminCheck()
 	system("CLS");
 
 	// Variables
-	int i = 0, j = 0, z = 0;
+	int i = 0, j = 0, z = 0, q = 0;
 	int commaIndex1;
 	int commaIndex2;
 	int commaIndex3;
@@ -261,7 +261,7 @@ void Admin::adminCheck()
 			foodQty[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + 3, commaIndex4);
 			status[i - 1] = line.substr(commaIndex1 + commaIndex2 + commaIndex3 + commaIndex4 + 4);
 		}
-		// readDineIn >> line;
+
 		i++;
 	}
 

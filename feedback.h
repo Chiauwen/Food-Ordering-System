@@ -11,6 +11,7 @@ using namespace std;
 class feedback{
     public:
         void fill_feedback();
+        void countdown();
 };
 
 #endif

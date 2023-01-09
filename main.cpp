@@ -3,6 +3,8 @@
 #include "Customer.cpp"
 #include "Admin.h"
 #include "Admin.cpp"
+#include "Feedback.h"
+#include "Feedback.cpp"
 #include "main.h"
 
 using namespace std;
@@ -12,6 +14,7 @@ void user_optional(int opt) /* FUNCTION FOR USER AND ADMIN ON MAIN PAGE */
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE); /* FOR TEXT COLOUR */
     Customer c;                                 /* CLASS OBJECT */
     Admin a;                                    /* CLASS OBJECT */
+    feedback f;                                    /* CLASS OBJECT */
 
     if (opt == 1)
     {
@@ -23,6 +26,12 @@ void user_optional(int opt) /* FUNCTION FOR USER AND ADMIN ON MAIN PAGE */
     {
         system("CLS");
         a.adminAuthentication();
+    }
+
+    else if (opt == 3)
+    {
+        system("CLS");
+        f.fill_feedback();
     }
 
     else
@@ -70,16 +79,22 @@ int mainPage()
         SetConsoleTextAttribute(h, 9);
         cout << "\t\t\t\t\t\t\t <2> Login" << endl;
 
+        SetConsoleTextAttribute(h, 8);
+        cout << "\n\n\t\t\t\t\t\t    Customer Feedback\n"
+             << endl;
+        SetConsoleTextAttribute(h, 9);
+        cout << "\t\t\t\t\t\t      <2> Feedback" << endl;
+
         SetConsoleTextAttribute(h, 6);
         cout << "\n\t\t\t\t   ------------------------------------------------------\n";
 
         SetConsoleTextAttribute(h, 7);
-        cout << "\n\n\t\t\t\t    >> Please select an option (1/2) : ";
+        cout << "\n\n\t\t\t\t    >> Please select an option (1/2/3) : ";
 
         // GO TO THE NEXT PAGE
         cin >> user_opt;
         user_optional(user_opt);
-    } while (user_opt != 1 && user_opt != 2);
+    } while (user_opt != 1 && user_opt != 2 && user_opt!=3);
 
     return 0;
 }

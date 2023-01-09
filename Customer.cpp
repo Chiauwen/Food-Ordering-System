@@ -103,14 +103,14 @@ displaymenu:
                     counter++;
                 }
 
-                if (counter >= 30)
+                if (counter >= 9)
                 { /*MAX CUSTOMER 30*/
                     full_queue();
                     full = true;
                 }
                 else
                 {
-                    if (queueNum >= 30)
+                    if (queueNum >= 9)
                     {
                         queueNum = 0;
                     }
@@ -158,7 +158,7 @@ displaymenu:
                     cout << "\n\t\t >> Please enter your table no.: ";
                     cin >> table_no;
 
-                    if (table_no >= 1 && table_no <= 30)
+                    if (table_no >= 1 && table_no <= 9)
                     {
                         // do nothing
                     }
@@ -524,7 +524,6 @@ void Customer::show_order3() /* FUCNTION TO SHOW CUSTOMER'S ORDER WITH CANCEL OR
     countdown();
 }
 
-// no payment
 void Customer::change_option()
 {
 change:

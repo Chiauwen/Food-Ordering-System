@@ -1,2 +1,8 @@
 name,phone,food,quantity,status
 ,,,,
+chiauwen,1010010102,2,1,PENDING
+chiauwen,1010010102,3,2,PENDING
+aloga,1231131,2,1,PENDING
+test,123123123,2,1,PENDING
+test,123123123,1,10,PENDING
+John,01110917217,12,5,PENDING

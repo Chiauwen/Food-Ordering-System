@@ -327,7 +327,6 @@ void Admin::adminCheck()
 						break;
 				if (b == c)
 				{
-					// copy the value from tableNo to table[]
 					table[num] = tableNo[b];
 
 					num++;

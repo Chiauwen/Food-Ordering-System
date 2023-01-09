@@ -13,61 +13,78 @@ void feedback::fill_feedback()
     stack<string> feedback;
     stack<int> rate;
 
-    int choice, rating;
+    int choice, rating, choice3;
     string feed_choice;
-    char choice2, choice3;
+    char choice2;
 
-    do
+    system("CLS");
+
+fill_in:
+    cout << "FEEDBACK" << endl
+         << endl;
+    cout << "1. Food" << endl;
+    cout << "2. Drink" << endl;
+    cout << "3. Services" << endl;
+    cout << "4. Self Order Machine" << endl;
+
+    cout << "What do you want to feedback to us?: ";
+    cin >> choice;
+
+    switch (choice)
     {
+    case 1:
+        feed_choice = "Food";
+        break;
+    case 2:
+        feed_choice = "Drink";
+        break;
+    case 3:
+        feed_choice = "Services";
+        break;
+    case 4:
+        feed_choice = "Self Order Machine";
+        break;
+    default:
+        cout << "Invalid input, try again!";
+    }
 
-        system("CLS");
+    feedback.push(feed_choice);
 
-        cout << "FEEDBACK" << endl
-             << endl;
-        cout << "1. Food" << endl;
-        cout << "2. Drink" << endl;
-        cout << "3. Services" << endl;
-        cout << "4. Self Order Machine" << endl;
+    system("CLS");
 
-        cout << "What do you want to feedback to us?: ";
-        cin >> choice;
+    cout << "Give us a rating on " << feedback.top();
+    cin >> rating;
+    rate.push(rating);
 
-        switch (choice)
-        {
-        case 1:
-            feed_choice = "Food";
-            break;
-        case 2:
-            feed_choice = "Drink";
-            break;
-        case 3:
-            feed_choice = "Services";
-            break;
-        case 4:
-            feed_choice = "Self Order Machine";
-            break;
-        default:
-            cout << "Invalid input, try again!";
-        }
+    cout << "Review your feedback before submit" << endl;
+    cout << "Feedback topic: " << feedback.top() << endl;
+    cout << "Rating: " << rate.top() << endl;
 
-        feedback.push(feed_choice);
+    cout << "1. Confirm submit feedback" << endl;
+    cout << "2. Submit another feedback" << endl;
+    cout << "3. Undo previous feedback" << endl;
+    cout << "4. Cancel feedback" << endl;
+    cin >> choice3;
 
-        system("CLS");
+    switch (choice3)
+    {
+    case 1:
+        choice2 = 'y';
+        break;
+    case 2:
+        goto fill_in;
+        break;
+    case 3:
+        feedback.pop();
+        rate.pop();
+        break;
+    case 4:
+        choice2 = 'n';
+    default:
+        cout << "Wrong input, try again!";
+    }
 
-        cout << "Give us a rating on " << feedback.top();
-        cin >> rating;
-        rate.push(rating);
-
-        cout << "Review your feedback before submit" << endl;
-        cout << "Feedback topic: " << feedback.top() << endl;
-        cout << "Rating: " << rate.top() << endl;
-
-        cout << "Submit another feedback?" << endl;
-        cin >> choice3;
-
-        tolower(choice3);
-
-    } while (choice3 != 'n');
+    tolower(choice3);
 
     cout << "Confirm submit feedback(s)?: ";
     cin >> choice2;

@@ -179,7 +179,7 @@ void feedback::countdown()
 
     while (counter >= 1)
     {
-        cout << "\r You will return back to feedback menu in " << counter << " seconds....." << flush;
+        cout << "\r You will return back to main menu in " << counter << " seconds....." << flush;
         Sleep(1000);
         counter--;
     }

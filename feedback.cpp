@@ -107,7 +107,7 @@ fill_in:
             if (feedback.empty() && rate.empty())
             {
                 SetConsoleTextAttribute(f, 4);
-                cout << " \n\t\t\t Oops, feedback can't be empty!" << endl;
+                cout << " \n\t\t\t Oops, you don't have a previous feedback!" << endl;
 
                 SetConsoleTextAttribute(f, 15);
                 cout << " \n\n \t\t\tMake a new feedback?(y/n): " << endl;

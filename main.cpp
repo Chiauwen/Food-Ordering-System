@@ -25,13 +25,13 @@ void user_optional(int opt) /* FUNCTION FOR USER AND ADMIN ON MAIN PAGE */
     else if (opt == 2)
     {
         system("CLS");
-        a.adminAuthentication();
+        f.fill_feedback();
     }
 
     else if (opt == 3)
     {
         system("CLS");
-        f.fill_feedback();
+        a.adminAuthentication();
     }
 
     else
@@ -69,7 +69,9 @@ int mainPage()
         cout << "\n\t\t\t\t\t\t\t  Customer \t\t\t\n"
              << endl;
         SetConsoleTextAttribute(h, 10);
-        cout << "\t\t\t\t\t\t       <1> Take Order \t\t\t" << endl;
+        cout << "\t\t\t\t\t\t       <1> Take Order \t\t\t" << endl << endl;
+        SetConsoleTextAttribute(h, 8);
+        cout << "\t\t\t\t\t\t        <2> Feedback" << endl;
         SetConsoleTextAttribute(h, 6);
         cout << "\n\t\t\t\t   ------------------------------------------------------";
 
@@ -77,13 +79,7 @@ int mainPage()
         cout << "\n\n\t\t\t\t\t\t\t   Admin\n"
              << endl;
         SetConsoleTextAttribute(h, 9);
-        cout << "\t\t\t\t\t\t\t <2> Login" << endl;
-
-        SetConsoleTextAttribute(h, 8);
-        cout << "\n\n\t\t\t\t\t\t    Customer Feedback\n"
-             << endl;
-        SetConsoleTextAttribute(h, 9);
-        cout << "\t\t\t\t\t\t      <2> Feedback" << endl;
+        cout << "\t\t\t\t\t\t\t <3> Login" << endl;
 
         SetConsoleTextAttribute(h, 6);
         cout << "\n\t\t\t\t   ------------------------------------------------------\n";

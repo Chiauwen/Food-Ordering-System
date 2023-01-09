@@ -2,10 +2,13 @@
 #include <stack>
 #include <string>
 #include <fstream>
+#include <Windows.h>
 using namespace std;
 
 #include "feedback.h"
 #include "main.h"
+
+HANDLE f = GetStdHandle(STD_OUTPUT_HANDLE); /* FOR TEXT COLOUR */
 
 void feedback::fill_feedback()
 {
@@ -20,14 +23,20 @@ void feedback::fill_feedback()
     system("CLS");
 
 fill_in:
-    cout << "FEEDBACK" << endl
-         << endl;
-    cout << "1. Food" << endl;
-    cout << "2. Drink" << endl;
-    cout << "3. Services" << endl;
-    cout << "4. Self Order Machine" << endl;
+    SetConsoleTextAttribute(f, 6);
+    cout << "\n\t\t\t\t --------------------------------------------- \n\n";
+    SetConsoleTextAttribute(f, 7);
+    cout << "\t\t\t\t\t\t    FEEDBACK" << endl;
+    SetConsoleTextAttribute(f, 6);
+    cout << "\n\t\t\t\t --------------------------------------------- \n";
 
-    cout << "What do you want to feedback to us?: ";
+    SetConsoleTextAttribute(f, 7);
+    cout << "\n\t\t\t\t 1. Food" << endl;
+    cout << "\t\t\t\t 2. Drink" << endl;
+    cout << "\t\t\t\t 3. Services" << endl;
+    cout << "\t\t\t\t 4. Self Order Machine" << endl;
+
+    cout << "\n\t\t\t\t What do you want to feedback to us?: ";
     cin >> choice;
 
     switch (choice)
@@ -52,93 +61,105 @@ fill_in:
 
     system("CLS");
 
-    cout << "Give us a rating on " << feedback.top();
+rate:
+    SetConsoleTextAttribute(f, 7);
+    cout << "\n Please give us a rating (0 to 100): \n\n"
+         << feedback.top();
     cin >> rating;
-    rate.push(rating);
-
-    cout << "Review your feedback before submit" << endl;
-    cout << "Feedback topic: " << feedback.top() << endl;
-    cout << "Rating: " << rate.top() << endl;
-
-    menu:
-    cout << "1. Confirm submit feedback" << endl;
-    cout << "2. Submit another feedback" << endl;
-    cout << "3. Undo previous feedback" << endl;
-    cout << "4. Cancel feedback" << endl;
-    cin >> choice3;
-
-    switch (choice3)
+    if (rating < 0 || rating > 100)
     {
-    case 1:
-        choice2 = 'y';
-        break;
-    case 2:
-        goto fill_in;
-        break;
-    case 3:
-        feedback.pop();
-        rate.pop();
-        if (feedback.empty() && rate.empty())
-        {
-            cout << "Oops, feedback can't be empty!" << endl;
-            cout << "Make a new feedback?(y/n): " << endl;
-            cin >> choice4;
-
-            tolower(choice4);
-
-            if(choice4!='n'){
-                goto fill_in;
-            }
-            else{
-                countdown();
-            }
-        }
-        else{
-            
-            cout << "Undo successfully!" << endl;
-            goto menu;
-        }
-        break;
-    case 4:
-        choice2 = 'n';
-    default:
-        cout << "Wrong input, try again!";
-    }
-
-    tolower(choice3);
-
-    cout << "Confirm submit feedback(s)?: ";
-    cin >> choice2;
-
-    tolower(choice2);
-
-    if (choice2 == 'n')
-    {
-        cout << "Your feedback form will be cancel" << endl;
-        feedback.pop();
-        rate.pop();
+        SetConsoleTextAttribute(f, 4);
+        cout << "\n Please rate from 0 to 100.\n"
+             << endl;
+        goto rate;
     }
     else
     {
-        ofstream file;
-        file.open("feedback.txt", ios::app);
+        rate.push(rating);
 
-        if (file.is_open())
+    menu:
+        cout << "1. Confirm submit feedback" << endl;
+        cout << "2. Submit another feedback" << endl;
+        cout << "3. Undo previous feedback" << endl;
+        cout << "4. Cancel feedback" << endl;
+        cin >> choice3;
+
+        switch (choice3)
         {
-            while (!feedback.empty() && !rate.empty())
+        case 1:
+            choice2 = 'y';
+            break;
+        case 2:
+            goto fill_in;
+            break;
+        case 3:
+            feedback.pop();
+            rate.pop();
+            if (feedback.empty() && rate.empty())
             {
-                file << feedback.top() << " " << rate.top() << endl;
-                feedback.pop();
-                rate.pop();
+                cout << "Oops, feedback can't be empty!" << endl;
+                cout << "Make a new feedback?(y/n): " << endl;
+                cin >> choice4;
+
+                tolower(choice4);
+
+                if (choice4 != 'n')
+                {
+                    goto fill_in;
+                }
+                else
+                {
+                    countdown();
+                }
             }
+            else
+            {
+
+                cout << "Undo successfully!" << endl;
+                goto menu;
+            }
+            break;
+        case 4:
+            choice2 = 'n';
+        default:
+            cout << "Wrong input, try again!";
         }
 
-        file.close();
+        tolower(choice3);
 
-        cout << "Feedback received !" << endl;
+        cout << "Confirm submit feedback(s)?: ";
+        cin >> choice2;
+
+        tolower(choice2);
+
+        if (choice2 == 'n')
+        {
+            cout << "Your feedback form will be cancel" << endl;
+            feedback.pop();
+            rate.pop();
+        }
+        else
+        {
+            ofstream file;
+            file.open("feedback.txt", ios::app);
+
+            if (file.is_open())
+            {
+                while (!feedback.empty() && !rate.empty())
+                {
+                    file << feedback.top() << " " << rate.top() << endl;
+                    feedback.pop();
+                    rate.pop();
+                }
+            }
+
+            file.close();
+
+            cout << "Feedback received !" << endl;
+        }
+
+        countdown();
     }
-
-    countdown();
 }
 
 void feedback::countdown()

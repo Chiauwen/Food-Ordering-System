@@ -88,41 +88,39 @@ displaymenu:
         bool emptyQueue = file.peek() == std::ifstream::traits_type::eof();
         string newQueue;
 
-        if (file)
+         if (file)
+    {
+        if (!emptyQueue)
         {
-            if (!emptyQueue)
+            while (!file.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
             {
-                while (!file.eof()) /* IF NOT AT END OF FILE, THEN CONTINUE TO READ DATA FROM FILE */
+                file >> queueNum;
+                if (counter != 0)
                 {
-                    file >> queueNum;
-                    if (counter != 0)
-                    {
-                        newQueue.append(" ");
-                    }
-                    newQueue.append(to_string(queueNum));
-                    counter++;
+                    newQueue.append(" ");
                 }
-
-                if (counter >= 9)
-                { /*MAX CUSTOMER 30*/
-                    full_queue();
-                    full = true;
-                }
-                else
-                {
-                    if (queueNum >= 9)
-                    {
-                        queueNum = 0;
-                    }
-                }
+                newQueue.append(to_string(queueNum));
+                counter++;
+            }
+            if (counter >= 30)
+            { /*MAX CUSTOMER 30*/
+                full_queue();
+                full = true;
             }
             else
             {
-                queueNum = 0;
+                if (queueNum >= 30)
+                {
+                    queueNum = 0;
+                }
             }
-            file.close();
         }
-
+        else
+        {
+            queueNum = 0;
+        }
+        file.close();
+    }
         // if the queue is not full
         if (!full)
         {
@@ -158,7 +156,7 @@ displaymenu:
                     cout << "\n\t\t >> Please enter your table no.: ";
                     cin >> table_no;
 
-                    if (table_no >= 1 && table_no <= 9)
+                    if (table_no >= 1 && table_no <= 30)
                     {
                         // do nothing
                     }

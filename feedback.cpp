@@ -36,32 +36,36 @@ fill_in:
     cout << "\t\t\t\t 3. Services" << endl;
     cout << "\t\t\t\t 4. Self Order Machine" << endl;
 
+    feedback:
+    SetConsoleTextAttribute(f, 7);
     cout << "\n\t\t\t\t What do you want to feedback to us?: ";
     cin >> choice;
 
     switch (choice)
     {
     case 1:
-        feed_choice = "Food";
+        feed_choice = " Food: ";
         break;
     case 2:
-        feed_choice = "Drink";
+        feed_choice = " Drink: ";
         break;
     case 3:
-        feed_choice = "Services";
+        feed_choice = " Services: ";
         break;
     case 4:
-        feed_choice = "Self Order Machine";
+        feed_choice = " Self Order Machine: ";
         break;
     default:
-        cout << "Invalid input, try again!";
+        SetConsoleTextAttribute(f, 4);
+        cout << "\n\t\t\t\t Invalid input, try again!\n";
+        goto feedback;
     }
 
     feedback.push(feed_choice);
 
     system("CLS");
 
-rate:
+    rate:
     SetConsoleTextAttribute(f, 7);
     cout << "\n Please give us a rating (0 to 100): \n\n"
          << feedback.top();
@@ -77,11 +81,14 @@ rate:
     {
         rate.push(rating);
 
-    menu:
-        cout << "1. Confirm submit feedback" << endl;
-        cout << "2. Submit another feedback" << endl;
-        cout << "3. Undo previous feedback" << endl;
-        cout << "4. Cancel feedback" << endl;
+        SetConsoleTextAttribute(f, 7);
+        cout << "\n\n 1. Submit feedback" << endl;
+        cout << " 2. Make another feedback" << endl;
+        cout << " 3. Undo previous feedback" << endl;
+        cout << " 4. Cancel feedback" << endl;
+    option:
+        SetConsoleTextAttribute(f, 7);
+        cout << "\n Please select an option: ";
         cin >> choice3;
 
         switch (choice3)
@@ -90,6 +97,7 @@ rate:
             choice2 = 'y';
             break;
         case 2:
+            system("cls");
             goto fill_in;
             break;
         case 3:
@@ -97,8 +105,8 @@ rate:
             rate.pop();
             if (feedback.empty() && rate.empty())
             {
-                cout << "Oops, feedback can't be empty!" << endl;
-                cout << "Make a new feedback?(y/n): " << endl;
+                cout << " Oops, feedback can't be empty!" << endl;
+                cout << " Make a new feedback?(y/n): " << endl;
                 cin >> choice4;
 
                 tolower(choice4);
@@ -115,26 +123,25 @@ rate:
             else
             {
 
-                cout << "Undo successfully!" << endl;
-                goto menu;
+                SetConsoleTextAttribute(f, 10);
+                cout << "\n Undo successfully!" << endl;
+                goto option;
             }
             break;
         case 4:
             choice2 = 'n';
+            break;
         default:
-            cout << "Wrong input, try again!";
+            SetConsoleTextAttribute(f, 4);
+            cout << "\n Invalid input, try again!\n";
+            goto option;
         }
-
-        tolower(choice3);
-
-        cout << "Confirm submit feedback(s)?: ";
-        cin >> choice2;
 
         tolower(choice2);
 
         if (choice2 == 'n')
         {
-            cout << "Your feedback form will be cancel" << endl;
+            cout << "\n Your feedback form will be cancel\n" << endl;
             feedback.pop();
             rate.pop();
         }
@@ -155,7 +162,10 @@ rate:
 
             file.close();
 
-            cout << "Feedback received !" << endl;
+            SetConsoleTextAttribute(f, 10);
+            cout << "\n Feedback received!" << endl;
+            SetConsoleTextAttribute(f, 7);
+            cout << "\n Thank you for your feedback, we will try our best to improve our services to you\n\n\n\n\n" << endl;
         }
 
         countdown();
@@ -169,7 +179,7 @@ void feedback::countdown()
 
     while (counter >= 1)
     {
-        cout << "\r You will return back to main menu in " << counter << " seconds....." << flush;
+        cout << "\r You will return back to feedback menu in " << counter << " seconds....." << flush;
         Sleep(1000);
         counter--;
     }

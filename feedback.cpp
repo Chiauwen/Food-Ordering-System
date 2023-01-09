@@ -110,7 +110,7 @@ fill_in:
                 cout << " \n\t\t\t Oops, you don't have a previous feedback!" << endl;
 
                 SetConsoleTextAttribute(f, 15);
-                cout << " \n\n \t\t\tMake a new feedback?(y/n): " << endl;
+                cout << " \n\n \t\t\t Make a new feedback?(y/n): " << endl;
                 cin >> choice4;
 
                 tolower(choice4);
@@ -128,7 +128,7 @@ fill_in:
             {
 
                 SetConsoleTextAttribute(f, 10);
-                cout << "\n\n\n \t\t\t\tUndo successfully!" << endl;
+                cout << "\n\t\t\t\t\t Undo successfully!" << endl;
                 goto option;
             }
             break;
@@ -146,7 +146,7 @@ fill_in:
         if (choice2 == 'n')
         {
             SetConsoleTextAttribute(f, 4);
-            cout << "\n\n \t\t\t\tYour feedback form will be cancel\n" << endl;
+            cout << "\n\n \t\t\t\t Your feedback form will be cancel\n" << endl;
             SetConsoleTextAttribute(f, 15);
             feedback.pop();
             rate.pop();
@@ -169,9 +169,9 @@ fill_in:
             file.close();
 
             SetConsoleTextAttribute(f, 10);
-            cout << "\n\t\t\t Feedback received!" << endl;
+            cout << "\n\t\t\t\t\t Feedback received!" << endl;
             SetConsoleTextAttribute(f, 7);
-            cout << "\n\t Thank you for your feedback, we will try our best to improve our services to you\n\n\n\n\n" << endl;
+            cout << "\n\t\t Thank you for your feedback, we will try our best to improve our services to you\n\n\n\n\n" << endl;
         }
 
         countdown();

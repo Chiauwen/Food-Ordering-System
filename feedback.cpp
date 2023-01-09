@@ -15,7 +15,7 @@ void feedback::fill_feedback()
 
     int choice, rating, choice3;
     string feed_choice;
-    char choice2;
+    char choice2, choice4;
 
     system("CLS");
 
@@ -60,6 +60,7 @@ fill_in:
     cout << "Feedback topic: " << feedback.top() << endl;
     cout << "Rating: " << rate.top() << endl;
 
+    menu:
     cout << "1. Confirm submit feedback" << endl;
     cout << "2. Submit another feedback" << endl;
     cout << "3. Undo previous feedback" << endl;
@@ -77,6 +78,26 @@ fill_in:
     case 3:
         feedback.pop();
         rate.pop();
+        if (feedback.empty() && rate.empty())
+        {
+            cout << "Oops, feedback can't be empty!" << endl;
+            cout << "Make a new feedback?(y/n): " << endl;
+            cin >> choice4;
+
+            tolower(choice4);
+
+            if(choice4!='n'){
+                goto fill_in;
+            }
+            else{
+                countdown();
+            }
+        }
+        else{
+            
+            cout << "Undo successfully!" << endl;
+            goto menu;
+        }
         break;
     case 4:
         choice2 = 'n';
